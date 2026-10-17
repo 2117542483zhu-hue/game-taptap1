@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0c">
+  <meta name="description" content="IRON/OS 是一款深色健身主题的放置点击游戏。训练获得力量，升级三大项和辅助动作。">
+  <title>IRON/OS · 铁馆进化</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b0a;
+      --panel: #121513;
+      --panel-raised: #191d1a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4f5ef;
+      --muted: #8f968d;
+      --lime: #d8ff3e;
+      --lime-soft: rgba(216, 255, 62, 0.14);
+      --orange: #ff7a2f;
+      --danger: #ff5a46;
+      --radius: 16px;
+      --tick-font: "Arial Narrow", "Roboto Condensed", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% -8%, rgba(216, 255, 62, 0.12), transparent 33rem),
+        radial-gradient(circle at 100% 38%, rgba(255, 122, 47, 0.07), transparent 24rem),
+        linear-gradient(180deg, #0c0f0d 0%, #090b0a 68%, #070908 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(115deg, transparent 0 48px, rgba(255, 255, 255, 0.018) 48px 49px),
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(0, 0, 0, 0.08) 5px 6px);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 85%);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    button,
+    .action-card {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 3px;
+    }
+
+    .app {
+      width: min(100%, 560px);
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding-bottom: calc(26px + env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: calc(14px + env(safe-area-inset-top)) 16px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+      background: linear-gradient(180deg, rgba(9, 11, 10, 0.94), rgba(9, 11, 10, 0.76));
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 33px;
+      height: 33px;
+      place-items: center;
+      border: 1px solid rgba(216, 255, 62, 0.36);
+      background: var(--lime-soft);
+      color: var(--lime);
+      font: 900 11px/1 var(--tick-font);
+      letter-spacing: -0.04em;
+      transform: skewX(-7deg);
+    }
+
+    .brand-name {
+      font: 900 17px/1 var(--tick-font);
+      letter-spacing: 0.05em;
+    }
+
+    .brand-name em {
+      color: var(--lime);
+      font-style: normal;
+    }
+
+    .save-state {
+      display: flex;
+      flex: none;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .save-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 0 4px rgba(216, 255, 62, 0.08);
+    }
+
+    main {
+      padding: 10px 14px 0;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(216, 255, 62, 0.2);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(216, 255, 62, 0.1), transparent 38%),
+        linear-gradient(180deg, #171b17 0%, #101310 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 18px 44px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero::after {
+      position: absolute;
+      top: -62px;
+      right: -48px;
+      width: 155px;
+      height: 155px;
+      border: 32px solid rgba(216, 255, 62, 0.045);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .hero-topline {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font: 700 10px/1 var(--tick-font);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--lime);
+    }
+
+    .live-badge::before {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lime);
+      content: "";
+      box-shadow: 0 0 8px var(--lime);
+    }
+
+    .hero-title {
+      position: relative;
+      z-index: 1;
+      margin: 11px 0 0;
+      color: #b5bbb3;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-number {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      min-width: 0;
+      margin: -3px 0 2px;
+      font-family: var(--tick-font);
+    }
+
+    .hero-number strong {
+      max-width: 100%;
+      overflow: hidden;
+      color: #fff;
+      font-size: clamp(4.4rem, 21vw, 7.3rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+      font-variant-numeric: tabular-nums;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-shadow: 0 0 32px rgba(216, 255, 62, 0.08);
+    }
+
+    .hero-unit {
+      flex: none;
+      padding-bottom: 9px;
+      color: var(--lime);
+      font: 800 17px/1 var(--tick-font);
+      letter-spacing: 0.09em;
+    }
+
+    .lift-strip {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 11px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--line);
+    }
+
+    .lift {
+      min-width: 0;
+      padding: 9px 9px 8px;
+      background: rgba(7, 9, 8, 0.64);
+    }
+
+    .lift span {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .lift strong {
+      color: #edf0e9;
+      font: 800 17px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lift small {
+      margin-left: 2px;
+      color: #71786f;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .command-panel {
+      position: relative;
+      margin-top: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(26, 30, 27, 0.96), rgba(15, 18, 16, 0.96));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    }
+
+    .wallet-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .wallet-label,
+    .eyebrow {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+    }
+
+    .wallet-value {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+    }
+
+    .wallet-value strong {
+      color: var(--lime);
+      font: 900 clamp(1.75rem, 8vw, 2.4rem)/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.045em;
+    }
+
+    .wallet-value span {
+      color: #7c8479;
+      font: 700 10px/1 var(--tick-font);
+      letter-spacing: 0.08em;
+    }
+
+    .rate-pill {
+      flex: none;
+      padding: 7px 9px;
+      border: 1px solid rgba(216, 255, 62, 0.15);
+      border-radius: 999px;
+      background: rgba(216, 255, 62, 0.06);
+      color: #b9c49c;
+      font: 600 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rate-pill strong {
+      color: var(--lime);
+      font-weight: 800;
+    }
+
+    .training-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.38fr) minmax(118px, 0.85fr);
+      gap: 9px;
+    }
+
+    .train-button {
+      position: relative;
+      display: flex;
+      min-height: 82px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      overflow: hidden;
+      padding: 13px 14px;
+      border: 0;
+      border-radius: 13px;
+      background:
+        radial-gradient(circle at 85% 0%, rgba(255, 255, 255, 0.46), transparent 32%),
+        var(--lime);
+      color: #111408;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(216, 255, 62, 0.12);
+      transition: transform 90ms ease, filter 160ms ease;
+      touch-action: manipulation;
+    }
+
+    .train-button::after {
+      position: absolute;
+      right: -18px;
+      bottom: -30px;
+      width: 88px;
+      height: 88px;
+      border: 18px solid rgba(9, 11, 7, 0.075);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .train-button:hover {
+      filter: brightness(1.04);
+    }
+
+    .train-button.is-punching {
+      transform: scale(0.97);
+    }
+
+    .train-icon {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: none;
+      place-items: center;
+      border: 1px solid rgba(10, 12, 7, 0.13);
+      border-radius: 10px;
+      background: rgba(9, 11, 7, 0.09);
+    }
+
+    .train-icon svg {
+      width: 29px;
+      height: 29px;
+    }
+
+    .train-copy {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .train-copy strong {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .train-copy small {
+      margin-top: 3px;
+      color: rgba(15, 19, 8, 0.62);
+      font: 700 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .click-mark {
+      position: relative;
+      z-index: 1;
+      align-self: flex-start;
+      padding: 3px 5px;
+      border: 1px solid rgba(12, 15, 7, 0.12);
+      border-radius: 4px;
+      color: rgba(13, 16, 8, 0.54);
+      font: 800 8px/1 var(--tick-font);
+      letter-spacing: 0.08em;
+    }
+
+    .auto-button {
+      display: flex;
+      min-height: 82px;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 5px;
+      padding: 10px 11px;
+      border: 1px solid var(--line-strong);
+      border-radius: 13px;
+      background: linear-gradient(145deg, #232823, #171b18);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: border-color 160ms ease, background 160ms ease, transform 100ms ease;
+    }
+
+    .auto-button:hover:not(:disabled) {
+      border-color: rgba(216, 255, 62, 0.32);
+      background: linear-gradient(145deg, #293027, #191e1a);
+    }
+
+    .auto-button:active:not(:disabled) {
+      transform: scale(0.975);
+    }
+
+    .auto-button:disabled {
+      cursor: default;
+      opacity: 0.58;
+    }
+
+    .auto-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .auto-topline b {
+      color: #d1d5cc;
+      font: 800 9px/1 var(--tick-font);
+    }
+
+    .auto-title {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .auto-output {
+      color: var(--lime);
+      font: 700 10px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .auto-buy {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      padding-top: 6px;
+      border-top: 1px solid var(--line);
+      color: #c2c8be;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .auto-buy b {
+      color: var(--lime);
+      font: 800 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .section {
+      margin-top: 22px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding: 0 2px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      text-align: right;
+    }
+
+    .action-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .action-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      overflow: hidden;
+      min-height: 78px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background:
+        linear-gradient(100deg, rgba(255, 255, 255, 0.035), transparent 38%),
+        rgba(18, 21, 19, 0.95);
+      transition: border-color 180ms ease, background 180ms ease, opacity 180ms ease;
+    }
+
+    .action-card::before {
+      position: absolute;
+      top: 13px;
+      bottom: 13px;
+      left: 0;
+      width: 2px;
+      border-radius: 0 2px 2px 0;
+      background: rgba(216, 255, 62, 0.55);
+      content: "";
+      opacity: 0.7;
+    }
+
+    .action-card.can-buy {
+      border-color: rgba(216, 255, 62, 0.22);
+      background:
+        linear-gradient(100deg, rgba(216, 255, 62, 0.045), transparent 42%),
+        rgba(20, 24, 21, 0.98);
+    }
+
+    .action-card.is-locked {
+      opacity: 0.62;
+    }
+
+    .action-card.is-locked::before {
+      background: #596057;
+    }
+
+    .action-card.bump {
+      animation: card-bump 260ms ease;
+    }
+
+    .action-icon {
+      position: relative;
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 9px;
+      background:
+        linear-gradient(135deg, rgba(216, 255, 62, 0.09), transparent),
+        #0c0e0d;
+      color: #e9ede4;
+      font: 900 14px/1 var(--tick-font);
+      letter-spacing: -0.03em;
+    }
+
+    .action-icon small {
+      position: absolute;
+      right: 4px;
+      bottom: 3px;
+      color: #60675e;
+      font: 700 6px/1 var(--tick-font);
+      letter-spacing: 0.05em;
+    }
+
+    .action-main {
+      min-width: 0;
+    }
+
+    .action-title-row {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-title-row h3 {
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .action-tag {
+      flex: none;
+      padding: 2px 4px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 3px;
+      color: #838b80;
+      font: 700 7px/1 var(--tick-font);
+      letter-spacing: 0.07em;
+    }
+
+    .action-tag.core {
+      border-color: rgba(216, 255, 62, 0.19);
+      color: #becf76;
+    }
+
+    .action-en {
+      display: block;
+      margin-top: 2px;
+      overflow: hidden;
+      color: #5e655c;
+      font: 700 7px/1 var(--tick-font);
+      letter-spacing: 0.09em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .action-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 9px;
+      margin-top: 7px;
+      color: #9ba297;
+      font: 700 9px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .action-meta b {
+      color: #e4e7df;
+      font-weight: 800;
+    }
+
+    .action-meta .kg-meta {
+      color: #7f8873;
+    }
+
+    .action-meta .kg-meta b {
+      color: #c3d679;
+    }
+
+    .buy-button {
+      display: flex;
+      min-width: 79px;
+      min-height: 48px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 7px 8px;
+      border: 1px solid rgba(216, 255, 62, 0.18);
+      border-radius: 9px;
+      background: rgba(216, 255, 62, 0.075);
+      color: #dce8a8;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, transform 100ms ease;
+      touch-action: manipulation;
+    }
+
+    .buy-button:hover:not(:disabled) {
+      border-color: rgba(216, 255, 62, 0.42);
+      background: rgba(216, 255, 62, 0.14);
+    }
+
+    .buy-button:active:not(:disabled) {
+      transform: scale(0.96);
+    }
+
+    .buy-button:disabled {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.025);
+      color: #60665e;
+      cursor: default;
+    }
+
+    .buy-button span {
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .buy-button b {
+      color: var(--lime);
+      font: 800 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .buy-button:disabled b {
+      color: #747b72;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .stat-box {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.024);
+    }
+
+    .stat-box span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-box strong {
+      color: #dce0d6;
+      font: 800 17px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 13px;
+      padding: 0 2px;
+      color: #626960;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      max-width: 74%;
+    }
+
+    .reset-button {
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+      color: #71786e;
+      font-size: 9px;
+      text-decoration: underline;
+      text-decoration-color: #3e443d;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .reset-button:hover {
+      color: #b0b6ac;
+    }
+
+    .float-gain {
+      position: fixed;
+      z-index: 60;
+      color: var(--lime);
+      font: 900 20px/1 var(--tick-font);
+      pointer-events: none;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+      animation: float-up 700ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      left: 16px;
+      z-index: 80;
+      width: min(calc(100% - 32px), 520px);
+      margin: 0 auto;
+      padding: 11px 14px;
+      border: 1px solid rgba(216, 255, 62, 0.22);
+      border-radius: 10px;
+      background: rgba(20, 24, 20, 0.96);
+      color: #e8ebdf;
+      font-size: 12px;
+      text-align: center;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(14px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modal[hidden] {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(3, 5, 4, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .modal-card {
+      position: relative;
+      width: min(100%, 390px);
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid rgba(216, 255, 62, 0.25);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(216, 255, 62, 0.13), transparent 44%),
+        #151915;
+      box-shadow: 0 28px 100px rgba(0, 0, 0, 0.65);
+      animation: modal-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-card::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--lime), transparent 75%);
+      content: "";
+    }
+
+    .modal-kicker {
+      color: var(--lime);
+      font: 800 9px/1 var(--tick-font);
+      letter-spacing: 0.17em;
+    }
+
+    .modal-card h2 {
+      margin: 12px 0 8px;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+    }
+
+    .modal-card p {
+      margin: 0;
+      color: #9da49a;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .offline-gain {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      margin: 19px 0 4px;
+      color: var(--lime);
+      font-family: var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .offline-gain strong {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .offline-gain span {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .cap-note {
+      min-height: 18px;
+      margin-top: 5px !important;
+      color: #777e74 !important;
+      font-size: 10px !important;
+    }
+
+    .modal-button {
+      width: 100%;
+      min-height: 49px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--lime);
+      color: #101408;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 4px) scale(0.88);
+      }
+      18% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -56px) scale(1.06);
+      }
+    }
+
+    @keyframes card-bump {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(0.985);
+      }
+    }
+
+    @keyframes modal-in {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 350px) {
+      main {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+
+      .training-grid {
+        grid-template-columns: minmax(0, 1fr) 110px;
+      }
+
+      .action-card {
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: 9px;
+      }
+
+      .action-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 12px;
+      }
+
+      .buy-button {
+        min-width: 70px;
+      }
+    }
+
+    @media (min-width: 680px) {
+      .app {
+        margin-top: 24px;
+        margin-bottom: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.075);
+        border-radius: 28px;
+        background: rgba(8, 10, 9, 0.72);
+        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.35);
+      }
+
+      .topbar {
+        border-radius: 27px 27px 0 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="IRON OS 铁馆进化">
+        <span class="brand-mark">I/O</span>
+        <span class="brand-name">IRON<em>/</em>OS</span>
+      </div>
+      <div class="save-state" aria-live="polite">
+        <span class="save-dot"></span>
+        <span id="saveStatus">自动存档</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="totalLabel">
+        <div class="hero-topline">
+          <span>SQUAT / BENCH / DEADLIFT</span>
+          <span class="live-badge">LIVE</span>
+        </div>
+        <p class="hero-title" id="totalLabel">三大项总和</p>
+        <div class="hero-number">
+          <strong id="totalKg">180</strong>
+          <span class="hero-unit">KG</span>
+        </div>
+        <div class="lift-strip" aria-label="三大项重量明细">
+          <div class="lift">
+            <span>深蹲</span>
+            <strong id="squatKg">60</strong><small>KG</small>
+          </div>
+          <div class="lift">
+            <span>卧推</span>
+            <strong id="benchKg">40</strong><small>KG</small>
+          </div>
+          <div class="lift">
+            <span>硬拉</span>
+            <strong id="deadliftKg">80</strong><small>KG</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="command-panel" aria-label="训练控制台">
+        <div class="wallet-row">
+          <div>
+            <span class="wallet-label">可用力量</span>
+            <div class="wallet-value">
+              <strong id="strengthValue">0</strong>
+              <span>STR</span>
+            </div>
+          </div>
+          <div class="rate-pill">自动 +<strong id="passiveRate">1.05</strong> /秒</div>
+        </div>
+
+        <div class="training-grid">
+          <button class="train-button" id="trainButton" type="button" aria-label="训练，获得力量">
+            <span class="train-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none">
+                <path d="M15 32h34M12 23v18M19 19v26M45 19v26M52 23v18" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+                <path d="M25 27v10M39 27v10" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+              </svg>
+            </span>
+            <span class="train-copy">
+              <strong>训练</strong>
+              <small id="clickGain">+2 力量 / 次</small>
+            </span>
+            <span class="click-mark">TAP</span>
+          </button>
+
+          <button class="auto-button" id="autoButton" type="button" aria-label="购买自动训练">
+            <span class="auto-topline">
+              <span>自动训练</span>
+              <b id="autoLevel">Lv.0</b>
+            </span>
+            <span class="auto-output" id="autoOutput">+0 /秒</span>
+            <span class="auto-buy">
+              <span id="autoVerb">启用</span>
+              <b id="autoCost">25</b>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="actionsHeading">
+        <div class="section-heading">
+          <h2 id="actionsHeading">训练动作</h2>
+          <span>升级价格 ×1.15 / 级</span>
+        </div>
+        <div class="action-list" id="actionList"></div>
+      </section>
+
+      <section class="stats-row" aria-label="训练记录">
+        <div class="stat-box">
+          <span>累计训练</span>
+          <strong id="clickCount">0 次</strong>
+        </div>
+        <div class="stat-box">
+          <span>累计获得力量</span>
+          <strong id="totalEarned">0</strong>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span class="footer-note">自动保存 · 离线收益按 50% 结算，最多累计 8 小时。</span>
+        <button class="reset-button" id="resetButton" type="button">重置存档</button>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="modal" id="offlineModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="offlineTitle">
+      <div class="modal-kicker">OFFLINE CREDIT / 50%</div>
+      <h2 id="offlineTitle">欢迎回到铁馆</h2>
+      <p>离线 <strong id="offlineTime">0 分钟</strong>，自动训练仍在继续。按离线时长的 50% 结算收益。</p>
+      <div class="offline-gain">
+        <strong id="offlineGain">0</strong>
+        <span>力量已到账</span>
+      </div>
+      <p class="cap-note" id="offlineCapNote"></p>
+      <button class="modal-button" id="offlineClose" type="button">收下收益</button>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const SAVE_KEY = "iron_os_save_v1";
+      const SAVE_VERSION = 1;
+      const TICK_MS = 100;
+      const PRICE_GROWTH = 1.15;
+      const AUTO_PRICE_GROWTH = 1.18;
+      const AUTO_OUTPUT_PER_LEVEL = 0.5;
+      const OFFLINE_RATE = 0.5;
+      const OFFLINE_CAP_SECONDS = 8 * 60 * 60;
+      const SAVE_INTERVAL_MS = 2000;
+
+      const ACTIONS = [
+        {
+          id: "squat",
+          code: "SQ",
+          name: "深蹲",
+          en: "Back Squat",
+          basePrice: 14,
+          baseOutput: 0.35,
+          baseKg: 60,
+          kgPerLevel: 10,
+          startLevel: 1,
+          startUnlocked: true,
+          core: true
+        },
+        {
+          id: "bench",
+          code: "BP",
+          name: "卧推",
+          en: "Bench Press",
+          basePrice: 20,
+          baseOutput: 0.28,
+          baseKg: 40,
+          kgPerLevel: 6,
+          startLevel: 1,
+          startUnlocked: true,
+          core: true
+        },
+        {
+          id: "deadlift",
+          code: "DL",
+          name: "硬拉",
+          en: "Deadlift",
+          basePrice: 26,
+          baseOutput: 0.42,
+          baseKg: 80,
+          kgPerLevel: 12,
+          startLevel: 1,
+          startUnlocked: true,
+          core: true
+        },
+        {
+          id: "legPress",
+          code: "LP",
+          name: "腿举",
+          en: "Leg Press",
+          basePrice: 130,
+          baseOutput: 1.8,
+          unlockCost: 180,
+          startLevel: 0,
+          startUnlocked: false,
+          core: false
+        },
+        {
+          id: "pullup",
+          code: "PU",
+          name: "引体向上",
+          en: "Weighted Pull-up",
+          basePrice: 700,
+          baseOutput: 6,
+          unlockCost: 900,
+          startLevel: 0,
+          startUnlocked: false,
+          core: false
+        },
+        {
+          id: "row",
+          code: "BR",
+          name: "杠铃划船",
+          en: "Barbell Row",
+          basePrice: 3200,
+          baseOutput: 24,
+          unlockCost: 4000,
+          startLevel: 0,
+          startUnlocked: false,
+          core: false
+        },
+        {
+          id: "press",
+          code: "OHP",
+          name: "站姿推举",
+          en: "Overhead Press",
+          basePrice: 15000,
+          baseOutput: 95,
+          unlockCost: 18000,
+          startLevel: 0,
+          startUnlocked: false,
+          core: false
+        },
+        {
+          id: "carry",
+          code: "FC",
+          name: "农夫行走",
+          en: "Farmer's Carry",
+          basePrice: 65000,
+          baseOutput: 380,
+          unlockCost: 80000,
+          startLevel: 0,
+          startUnlocked: false,
+          core: false
+        }
+      ];
+
+      const CORE_ACTIONS = ACTIONS.filter((action) => action.core);
+
+      const numberFormatter = new Intl.NumberFormat("zh-CN", {
+        maximumFractionDigits: 0
+      });
+      const decimalFormatter = new Intl.NumberFormat("zh-CN", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+      const preciseFormatter = new Intl.NumberFormat("zh-CN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      function createDefaultState() {
+        const actionState = {};
+        for (const definition of ACTIONS) {
+          actionState[definition.id] = {
+            level: definition.startLevel,
+            unlocked: definition.startUnlocked
+          };
+        }
+
+        return {
+          version: SAVE_VERSION,
+          strength: 0,
+          totalClicks: 0,
+          totalEarned: 0,
+          autoTrainingLevel: 0,
+          actions: actionState,
+          lastSeen: Date.now()
+        };
+      }
+
+      function safeNumber(value, fallback = 0) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : fallback;
+      }
+
+      function loadGame() {
+        const freshState = createDefaultState();
+        let rawSave = null;
+
+        try {
+          rawSave = localStorage.getItem(SAVE_KEY);
+        } catch (error) {
+          return { state: freshState, offline: null, storageError: true };
+        }
+
+        if (!rawSave) {
+          return { state: freshState, offline: null };
+        }
+
+        try {
+          const saved = JSON.parse(rawSave);
+          if (!saved || typeof saved !== "object") {
+            throw new Error("Invalid save");
+          }
+
+          const merged = createDefaultState();
+          merged.strength = Math.max(0, safeNumber(saved.strength));
+          merged.totalClicks = Math.max(0, Math.floor(safeNumber(saved.totalClicks)));
+          merged.totalEarned = Math.max(0, safeNumber(saved.totalEarned));
+          merged.autoTrainingLevel = Math.max(
+            0,
+            Math.floor(safeNumber(saved.autoTrainingLevel))
+          );
+          merged.lastSeen = Math.max(0, safeNumber(saved.lastSeen, Date.now()));
+
+          for (const definition of ACTIONS) {
+            const savedAction = saved.actions && saved.actions[definition.id];
+            const target = merged.actions[definition.id];
+            if (!savedAction || typeof savedAction !== "object") {
+              continue;
+            }
+
+            target.level = Math.max(0, Math.floor(safeNumber(savedAction.level)));
+            target.unlocked = Boolean(savedAction.unlocked) || target.level > 0;
+
+            if (definition.startUnlocked) {
+              target.unlocked = true;
+              target.level = Math.max(definition.startLevel, target.level);
+            }
+          }
+
+          const now = Date.now();
+          const elapsedSeconds = Math.max(0, (now - merged.lastSeen) / 1000);
+          const creditedSeconds = Math.min(elapsedSeconds, OFFLINE_CAP_SECONDS);
+          const rate = getPassiveRate(merged);
+          const gain = rate * creditedSeconds * OFFLINE_RATE;
+
+          merged.strength += gain;
+          merged.totalEarned += gain;
+          merged.lastSeen = now;
+
+          return {
+            state: merged,
+            offline: elapsedSeconds >= 5
+              ? {
+                  elapsedSeconds,
+                  creditedSeconds,
+                  gain,
+                  capped: elapsedSeconds > OFFLINE_CAP_SECONDS
+                }
+              : null
+          };
+        } catch (error) {
+          try {
+            localStorage.removeItem(SAVE_KEY);
+          } catch (removeError) {
+            // Storage can be unavailable in private browsing contexts.
+          }
+          return { state: freshState, offline: null, corrupted: true };
+        }
+      }
+
+      const loaded = loadGame();
+      const state = loaded.state;
+      let lastTickAt = performance.now();
+      let hiddenAt = 0;
+      let toastTimer = 0;
+      let saveStatusTimer = 0;
+
+      const elements = {
+        totalKg: document.getElementById("totalKg"),
+        squatKg: document.getElementById("squatKg"),
+        benchKg: document.getElementById("benchKg"),
+        deadliftKg: document.getElementById("deadliftKg"),
+        strength: document.getElementById("strengthValue"),
+        passiveRate: document.getElementById("passiveRate"),
+        clickGain: document.getElementById("clickGain"),
+        trainButton: document.getElementById("trainButton"),
+        autoButton: document.getElementById("autoButton"),
+        autoLevel: document.getElementById("autoLevel"),
+        autoOutput: document.getElementById("autoOutput"),
+        autoVerb: document.getElementById("autoVerb"),
+        autoCost: document.getElementById("autoCost"),
+        actionList: document.getElementById("actionList"),
+        clickCount: document.getElementById("clickCount"),
+        totalEarned: document.getElementById("totalEarned"),
+        saveStatus: document.getElementById("saveStatus"),
+        toast: document.getElementById("toast"),
+        offlineModal: document.getElementById("offlineModal"),
+        offlineTime: document.getElementById("offlineTime"),
+        offlineGain: document.getElementById("offlineGain"),
+        offlineCapNote: document.getElementById("offlineCapNote"),
+        offlineClose: document.getElementById("offlineClose"),
+        resetButton: document.getElementById("resetButton")
+      };
+
+      const actionRefs = new Map();
+
+      function formatAmount(value) {
+        const safeValue = Math.max(0, safeNumber(value));
+        if (safeValue < 10) {
+          return decimalFormatter.format(safeValue);
+        }
+        if (safeValue < 1000) {
+          return numberFormatter.format(Math.floor(safeValue));
+        }
+        return formatCompact(safeValue);
+      }
+
+      function formatCompact(value) {
+        const safeValue = Math.max(0, safeNumber(value));
+        if (safeValue >= 1e12) {
+          return trimDecimal(safeValue / 1e12) + "万亿";
+        }
+        if (safeValue >= 1e8) {
+          return trimDecimal(safeValue / 1e8) + "亿";
+        }
+        if (safeValue >= 1e4) {
+          return trimDecimal(safeValue / 1e4) + "万";
+        }
+        return numberFormatter.format(safeValue);
+      }
+
+      function trimDecimal(value) {
+        const rounded = value >= 100
+          ? value.toFixed(0)
+          : value >= 10
+            ? value.toFixed(1)
+            : value.toFixed(2);
+        return String(Number(rounded));
+      }
+
+      function formatKg(value) {
+        const safeValue = Math.max(0, safeNumber(value));
+        if (safeValue < 1e6) {
+          return numberFormatter.format(safeValue);
+        }
+        return formatCompact(safeValue);
+      }
+
+      function formatRate(value) {
+        const safeValue = Math.max(0, safeNumber(value));
+        if (safeValue < 10) {
+          return safeValue.toFixed(2);
+        }
+        if (safeValue < 1000) {
+          return safeValue.toFixed(1);
+        }
+        return formatCompact(safeValue);
+      }
+
+      function formatDuration(seconds) {
+        const totalMinutes = Math.max(0, Math.floor(seconds / 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        if (hours > 0 && minutes > 0) {
+          return hours + " 小时 " + minutes + " 分钟";
+        }
+        if (hours > 0) {
+          return hours + " 小时";
+        }
+        return Math.max(1, totalMinutes) + " 分钟";
+      }
+
+      function getActionOutput(definition, actionState) {
+        if (!actionState || !actionState.unlocked) {
+          return 0;
+        }
+        return definition.baseOutput * actionState.level;
+      }
+
+      function getAutoOutput(gameState = state) {
+        return gameState.autoTrainingLevel * AUTO_OUTPUT_PER_LEVEL;
+      }
+
+      function getActionOutputTotal(gameState = state) {
+        return ACTIONS.reduce((total, definition) => {
+          return total + getActionOutput(definition, gameState.actions[definition.id]);
+        }, 0);
+      }
+
+      function getPassiveRate(gameState = state) {
+        return getActionOutputTotal(gameState) + getAutoOutput(gameState);
+      }
+
+      function getLiftBreakdown(gameState = state) {
+        const breakdown = {};
+        for (const definition of CORE_ACTIONS) {
+          const actionState = gameState.actions[definition.id];
+          breakdown[definition.id] = definition.baseKg
+            + Math.max(0, actionState.level - 1) * definition.kgPerLevel;
+        }
+        return breakdown;
+      }
+
+      function getThreeLiftTotal(gameState = state) {
+        const breakdown = getLiftBreakdown(gameState);
+        return CORE_ACTIONS.reduce((total, definition) => {
+          return total + breakdown[definition.id];
+        }, 0);
+      }
+
+      function getClickPower(gameState = state) {
+        return 1 + Math.floor(Math.sqrt(getThreeLiftTotal(gameState) / 100));
+      }
+
+      function getActionPrice(definition, actionState) {
+        return Math.ceil(
+          definition.basePrice * Math.pow(PRICE_GROWTH, actionState.level)
+        );
+      }
+
+      function getAutoPrice(gameState = state) {
+        return Math.ceil(
+          25 * Math.pow(AUTO_PRICE_GROWTH, gameState.autoTrainingLevel)
+        );
+      }
+
+      function buildActionCards() {
+        const fragment = document.createDocumentFragment();
+
+        for (const definition of ACTIONS) {
+          const card = document.createElement("article");
+          card.className = "action-card";
+          card.dataset.actionId = definition.id;
+          card.innerHTML =
+            '<div class="action-icon">' + definition.code +
+              "<small>" + (definition.core ? "SBD" : "AUX") + "</small>" +
+            "</div>" +
+            '<div class="action-main">' +
+              '<div class="action-title-row">' +
+                "<h3>" + definition.name + "</h3>" +
+                '<span class="action-tag' + (definition.core ? " core" : "") + '">' +
+                  (definition.core ? "核心" : "辅助") +
+                "</span>" +
+              "</div>" +
+              '<span class="action-en">' + definition.en + "</span>" +
+              '<div class="action-meta">' +
+                '<span data-ref="level"></span>' +
+                '<span data-ref="output"></span>' +
+                (definition.core
+                  ? '<span class="kg-meta">+<b>' + definition.kgPerLevel + "</b>KG / 级</span>"
+                  : "") +
+              "</div>" +
+            "</div>" +
+            '<button class="buy-button" type="button" data-buy="' + definition.id + '">' +
+              '<span data-ref="verb"></span>' +
+              '<b data-ref="price"></b>' +
+            "</button>";
+
+          fragment.appendChild(card);
+          actionRefs.set(definition.id, {
+            card,
+            level: card.querySelector('[data-ref="level"]'),
+            output: card.querySelector('[data-ref="output"]'),
+            verb: card.querySelector('[data-ref="verb"]'),
+            price: card.querySelector('[data-ref="price"]'),
+            button: card.querySelector('[data-buy]')
+          });
+        }
+
+        elements.actionList.appendChild(fragment);
+      }
+
+      function updateUI() {
+        const breakdown = getLiftBreakdown();
+        const totalKg = getThreeLiftTotal();
+        const rate = getPassiveRate();
+        const clickPower = getClickPower();
+
+        elements.totalKg.textContent = formatKg(totalKg);
+        elements.squatKg.textContent = formatKg(breakdown.squat);
+        elements.benchKg.textContent = formatKg(breakdown.bench);
+        elements.deadliftKg.textContent = formatKg(breakdown.deadlift);
+        elements.strength.textContent = formatAmount(state.strength);
+        elements.passiveRate.textContent = formatRate(rate);
+        elements.clickGain.textContent = "+" + formatAmount(clickPower) + " 力量 / 次";
+
+        const autoPrice = getAutoPrice();
+        elements.autoLevel.textContent = "Lv." + state.autoTrainingLevel;
+        elements.autoOutput.textContent = "+" + formatRate(getAutoOutput()) + " /秒";
+        elements.autoVerb.textContent = state.autoTrainingLevel === 0 ? "启用" : "升级";
+        elements.autoCost.textContent = formatCompact(autoPrice);
+        elements.autoButton.disabled = state.strength < autoPrice;
+        elements.autoButton.classList.toggle(
+          "can-buy",
+          state.strength >= autoPrice
+        );
+        elements.autoButton.setAttribute(
+          "aria-label",
+          (state.autoTrainingLevel === 0 ? "启用自动训练，消耗 " : "升级自动训练，消耗 ")
+            + autoPrice + " 力量"
+        );
+
+        for (const definition of ACTIONS) {
+          const actionState = state.actions[definition.id];
+          const refs = actionRefs.get(definition.id);
+          const isUnlocked = actionState.unlocked;
+          const price = isUnlocked
+            ? getActionPrice(definition, actionState)
+            : definition.unlockCost;
+          const affordable = state.strength >= price;
+
+          refs.card.classList.toggle("is-locked", !isUnlocked);
+          refs.card.classList.toggle("can-buy", isUnlocked && affordable);
+          refs.level.textContent = isUnlocked ? "Lv." + actionState.level : "未解锁";
+          refs.output.innerHTML = isUnlocked
+            ? "+<b>" + formatRate(getActionOutput(definition, actionState)) + "</b>/秒"
+            : "解锁后 +" + formatRate(definition.baseOutput) + "/秒";
+          refs.verb.textContent = isUnlocked ? "升级" : "解锁";
+          refs.price.textContent = formatCompact(price);
+          refs.button.disabled = !affordable;
+          refs.button.setAttribute(
+            "aria-label",
+            (isUnlocked ? "升级" : "解锁") + definition.name + "，消耗 " + price + " 力量"
+          );
+          refs.price.title = price.toLocaleString("zh-CN") + " 力量";
+        }
+
+        elements.clickCount.textContent = formatCompact(state.totalClicks) + " 次";
+        elements.totalEarned.textContent = formatAmount(state.totalEarned);
+      }
+
+      function addStrength(amount) {
+        const gain = Math.max(0, safeNumber(amount));
+        state.strength += gain;
+        state.totalEarned += gain;
+      }
+
+      function buyAction(definition) {
+        const actionState = state.actions[definition.id];
+        if (!actionState) {
+          return;
+        }
+
+        if (!actionState.unlocked) {
+          const unlockCost = definition.unlockCost;
+          if (state.strength < unlockCost) {
+            return;
+          }
+          state.strength -= unlockCost;
+          actionState.unlocked = true;
+          actionState.level = Math.max(1, actionState.level);
+          showToast(definition.name + "已解锁 · 自动产出开始");
+          animateCard(definition.id);
+          updateUI();
+          saveGame(true);
+          return;
+        }
+
+        const price = getActionPrice(definition, actionState);
+        if (state.strength < price) {
+          return;
+        }
+
+        state.strength -= price;
+        actionState.level += 1;
+        animateCard(definition.id);
+        updateUI();
+        saveGame(true);
+      }
+
+      function buyAutoTraining() {
+        const price = getAutoPrice();
+        if (state.strength < price) {
+          return;
+        }
+
+        const firstPurchase = state.autoTrainingLevel === 0;
+        state.strength -= price;
+        state.autoTrainingLevel += 1;
+        showToast(
+          firstPurchase
+            ? "自动训练已启用 · 教练开始计圈"
+            : "自动训练升至 Lv." + state.autoTrainingLevel
+        );
+        elements.autoButton.animate(
+          [
+            { transform: "scale(1)" },
+            { transform: "scale(0.95)" },
+            { transform: "scale(1)" }
+          ],
+          { duration: 220, easing: "ease-out" }
+        );
+        updateUI();
+        saveGame(true);
+      }
+
+      function animateCard(actionId) {
+        const refs = actionRefs.get(actionId);
+        if (!refs) {
+          return;
+        }
+        refs.card.classList.remove("bump");
+        void refs.card.offsetWidth;
+        refs.card.classList.add("bump");
+        window.setTimeout(() => refs.card.classList.remove("bump"), 300);
+      }
+
+      function train(event) {
+        const gain = getClickPower();
+        addStrength(gain);
+        state.totalClicks += 1;
+
+        elements.trainButton.classList.add("is-punching");
+        window.setTimeout(() => {
+          elements.trainButton.classList.remove("is-punching");
+        }, 110);
+
+        const rect = elements.trainButton.getBoundingClientRect();
+        const x = event && Number.isFinite(event.clientX) && event.clientX > 0
+          ? event.clientX
+          : rect.left + rect.width / 2;
+        const y = event && Number.isFinite(event.clientY) && event.clientY > 0
+          ? event.clientY
+          : rect.top + rect.height / 2;
+        spawnFloatingGain(x, y, "+" + formatAmount(gain));
+
+        if (navigator.vibrate) {
+          navigator.vibrate(8);
+        }
+
+        updateUI();
+      }
+
+      function spawnFloatingGain(x, y, label) {
+        const floater = document.createElement("span");
+        floater.className = "float-gain";
+        floater.textContent = label;
+        floater.style.left = x + "px";
+        floater.style.top = y + "px";
+        document.body.appendChild(floater);
+        window.setTimeout(() => floater.remove(), 720);
+      }
+
+      function showToast(message) {
+        elements.toast.textContent = message;
+        elements.toast.classList.add("is-visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => {
+          elements.toast.classList.remove("is-visible");
+        }, 2200);
+      }
+
+      function saveGame(showFeedback = false) {
+        state.lastSeen = Date.now();
+        try {
+          localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+          if (showFeedback) {
+            elements.saveStatus.textContent = "已保存";
+            window.clearTimeout(saveStatusTimer);
+            saveStatusTimer = window.setTimeout(() => {
+              elements.saveStatus.textContent = "自动存档";
+            }, 1300);
+          }
+        } catch (error) {
+          elements.saveStatus.textContent = "存档不可用";
+        }
+      }
+
+      function showOfflineReport(report) {
+        if (!report) {
+          return;
+        }
+        elements.offlineTime.textContent = formatDuration(report.creditedSeconds);
+        elements.offlineGain.textContent = formatAmount(report.gain);
+        elements.offlineCapNote.textContent = report.capped
+          ? "离线时间超过 8 小时，已按 8 小时上限结算。"
+          : "收益倍率 50% · 上限 8 小时";
+        elements.offlineModal.hidden = false;
+        elements.offlineClose.focus({ preventScroll: true });
+      }
+
+      function closeOfflineReport() {
+        elements.offlineModal.hidden = true;
+        saveGame();
+      }
+
+      function tick() {
+        if (document.hidden) {
+          return;
+        }
+        const now = performance.now();
+        const deltaSeconds = Math.min(1, Math.max(0, (now - lastTickAt) / 1000));
+        lastTickAt = now;
+
+        addStrength(getPassiveRate() * deltaSeconds);
+        updateUI();
+      }
+
+      buildActionCards();
+      updateUI();
+
+      elements.trainButton.addEventListener("click", train);
+      elements.autoButton.addEventListener("click", buyAutoTraining);
+      elements.actionList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-buy]");
+        if (!button) {
+          return;
+        }
+        const definition = ACTIONS.find((action) => action.id === button.dataset.buy);
+        if (definition) {
+          buyAction(definition);
+        }
+      });
+
+      elements.offlineClose.addEventListener("click", closeOfflineReport);
+      elements.offlineModal.addEventListener("click", (event) => {
+        if (event.target === elements.offlineModal) {
+          closeOfflineReport();
+        }
+      });
+
+      elements.resetButton.addEventListener("click", () => {
+        const confirmed = window.confirm("确定清空全部进度并重新开始吗？此操作无法撤销。");
+        if (!confirmed) {
+          return;
+        }
+        try {
+          localStorage.removeItem(SAVE_KEY);
+        } catch (error) {
+          // Reloading still resets the in-memory game when storage is unavailable.
+        }
+        window.location.reload();
+      });
+
+      window.addEventListener("pagehide", () => saveGame());
+      window.addEventListener("beforeunload", () => saveGame());
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          hiddenAt = Date.now();
+          saveGame();
+        } else {
+          if (hiddenAt > 0) {
+            const hiddenSeconds = Math.max(0, (Date.now() - hiddenAt) / 1000);
+            addStrength(getPassiveRate() * hiddenSeconds);
+            hiddenAt = 0;
+            updateUI();
+          }
+          lastTickAt = performance.now();
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !elements.offlineModal.hidden) {
+          closeOfflineReport();
+        }
+      });
+
+      if (loaded.corrupted) {
+        showToast("存档损坏，已开始新的训练周期");
+      } else if (loaded.storageError) {
+        showToast("浏览器存储不可用，本次进度不会保留");
+      }
+
+      showOfflineReport(loaded.offline);
+      saveGame();
+      window.setInterval(tick, TICK_MS);
+      window.setInterval(() => saveGame(), SAVE_INTERVAL_MS);
+    })();
+  </script>
+</body>
+</html>

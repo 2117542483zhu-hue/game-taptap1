@@ -61,6 +61,10 @@
       mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 85%);
     }
 
+    body.modal-open {
+      overflow: hidden;
+    }
+
     button {
       font: inherit;
     }
@@ -204,6 +208,168 @@
       background: var(--lime);
       content: "";
       box-shadow: 0 0 8px var(--lime);
+    }
+
+    .character-stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: stretch;
+      gap: 14px;
+      margin-top: 14px;
+      padding: 11px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 0% 50%, rgba(216, 255, 62, 0.09), transparent 42%),
+        rgba(6, 8, 7, 0.38);
+    }
+
+    .character-stage::after {
+      position: absolute;
+      top: 50%;
+      left: 55px;
+      width: 54px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(216, 255, 62, 0.42), transparent);
+      content: "";
+      pointer-events: none;
+    }
+
+    .character-avatar {
+      position: relative;
+      display: grid;
+      width: 92px;
+      height: 92px;
+      flex: none;
+      place-items: center;
+      border: 1px solid rgba(216, 255, 62, 0.25);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.1), transparent 32%),
+        radial-gradient(circle, rgba(216, 255, 62, 0.12), rgba(7, 9, 7, 0.86) 68%);
+      box-shadow:
+        inset 0 0 19px rgba(216, 255, 62, 0.07),
+        0 8px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .character-avatar::before,
+    .character-avatar::after {
+      position: absolute;
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .character-avatar::before {
+      inset: 6px;
+      border: 1px dashed rgba(216, 255, 62, 0.22);
+    }
+
+    .character-avatar::after {
+      top: 4px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      background: var(--lime);
+      box-shadow: 0 0 13px var(--lime);
+    }
+
+    .character-emoji {
+      position: relative;
+      z-index: 1;
+      display: block;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 58px;
+      line-height: 1;
+      filter: drop-shadow(0 6px 9px rgba(0, 0, 0, 0.4));
+      transform-origin: 50% 92%;
+    }
+
+    .character-info {
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .character-kicker {
+      color: var(--muted);
+      font: 700 8px/1 var(--tick-font);
+      letter-spacing: 0.14em;
+    }
+
+    .character-name-row {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    .character-name-row strong {
+      min-width: 0;
+      overflow: hidden;
+      color: #f5f7ef;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .character-form {
+      flex: none;
+      padding: 3px 5px;
+      border: 1px solid rgba(216, 255, 62, 0.2);
+      border-radius: 3px;
+      color: #b6ca68;
+      font: 800 7px/1 var(--tick-font);
+      letter-spacing: 0.08em;
+    }
+
+    .evolution-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+      color: #777f73;
+      font: 700 8px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .evolution-meta b {
+      color: #aebc77;
+      font-weight: 800;
+    }
+
+    .evolution-track {
+      height: 5px;
+      margin-top: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.065);
+    }
+
+    .evolution-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #93b82f, var(--lime));
+      box-shadow: 0 0 12px rgba(216, 255, 62, 0.4);
+      transition: width 260ms ease;
+    }
+
+    .character-avatar.is-bouncing .character-emoji {
+      animation: character-bounce 420ms cubic-bezier(0.2, 0.9, 0.3, 1.25);
+    }
+
+    .character-stage.is-evolving {
+      animation: character-stage-glow 600ms ease;
     }
 
     .hero-title {
@@ -351,50 +517,99 @@
       font-weight: 800;
     }
 
-    .training-grid {
+    .training-stage {
+      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.38fr) minmax(118px, 0.85fr);
-      gap: 9px;
+      justify-items: center;
+      gap: 18px;
+      padding: 10px 0 2px;
+    }
+
+    .training-stage::before {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: min(86vw, 330px);
+      height: 230px;
+      background: radial-gradient(circle, rgba(216, 255, 62, 0.13), transparent 67%);
+      content: "";
+      pointer-events: none;
+      transform: translateX(-50%);
     }
 
     .train-button {
       position: relative;
+      z-index: 1;
       display: flex;
-      min-height: 82px;
+      width: clamp(164px, 48vw, 188px);
+      aspect-ratio: 1;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: center;
+      gap: 4px;
       overflow: hidden;
-      padding: 13px 14px;
-      border: 0;
-      border-radius: 13px;
+      padding: 20px;
+      border: 2px solid rgba(246, 255, 190, 0.38);
+      border-radius: 50%;
       background:
-        radial-gradient(circle at 85% 0%, rgba(255, 255, 255, 0.46), transparent 32%),
-        var(--lime);
+        radial-gradient(circle at 36% 23%, rgba(255, 255, 255, 0.52), transparent 23%),
+        radial-gradient(circle at 50% 55%, #e4ff67 0%, var(--lime) 56%, #b2d822 100%);
       color: #111408;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(216, 255, 62, 0.12);
-      transition: transform 90ms ease, filter 160ms ease;
+      box-shadow:
+        0 0 0 9px rgba(216, 255, 62, 0.045),
+        0 0 46px rgba(216, 255, 62, 0.28),
+        0 18px 42px rgba(0, 0, 0, 0.32),
+        inset 0 2px 2px rgba(255, 255, 255, 0.38),
+        inset 0 -8px 20px rgba(89, 111, 8, 0.2);
+      transition:
+        transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        filter 160ms ease,
+        box-shadow 160ms ease;
       touch-action: manipulation;
+    }
+
+    .train-button::before {
+      position: absolute;
+      inset: 9px;
+      border: 1px dashed rgba(15, 19, 8, 0.2);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
     }
 
     .train-button::after {
       position: absolute;
-      right: -18px;
-      bottom: -30px;
-      width: 88px;
-      height: 88px;
-      border: 18px solid rgba(9, 11, 7, 0.075);
+      right: -24px;
+      bottom: -38px;
+      width: 116px;
+      height: 116px;
+      border: 24px solid rgba(9, 11, 7, 0.055);
       border-radius: 50%;
       content: "";
+      pointer-events: none;
     }
 
     .train-button:hover {
       filter: brightness(1.04);
+      box-shadow:
+        0 0 0 11px rgba(216, 255, 62, 0.055),
+        0 0 62px rgba(216, 255, 62, 0.38),
+        0 20px 46px rgba(0, 0, 0, 0.34),
+        inset 0 2px 2px rgba(255, 255, 255, 0.38),
+        inset 0 -8px 20px rgba(89, 111, 8, 0.2);
+    }
+
+    .train-button:active {
+      transform: scale(0.91);
+      box-shadow:
+        0 0 0 5px rgba(216, 255, 62, 0.035),
+        0 0 26px rgba(216, 255, 62, 0.2),
+        0 8px 20px rgba(0, 0, 0, 0.28);
     }
 
     .train-button.is-punching {
-      transform: scale(0.97);
+      animation: train-rebound 380ms cubic-bezier(0.2, 1.2, 0.35, 1);
     }
 
     .train-icon {
@@ -405,63 +620,67 @@
       height: 42px;
       flex: none;
       place-items: center;
-      border: 1px solid rgba(10, 12, 7, 0.13);
-      border-radius: 10px;
-      background: rgba(9, 11, 7, 0.09);
+      border: 1px solid rgba(10, 12, 7, 0.12);
+      border-radius: 50%;
+      background: rgba(9, 11, 7, 0.085);
     }
 
     .train-icon svg {
-      width: 29px;
-      height: 29px;
+      width: 28px;
+      height: 28px;
     }
 
     .train-copy {
       position: relative;
       z-index: 1;
       display: flex;
-      min-width: 0;
-      flex: 1;
       flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
+      align-items: center;
+      text-align: center;
     }
 
     .train-copy strong {
-      font-size: 23px;
+      font-size: 25px;
       font-weight: 900;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
     }
 
     .train-copy small {
       margin-top: 3px;
       color: rgba(15, 19, 8, 0.62);
-      font: 700 11px/1 var(--tick-font);
+      font: 700 10px/1 var(--tick-font);
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
 
     .click-mark {
-      position: relative;
+      position: absolute;
       z-index: 1;
-      align-self: flex-start;
+      top: 20px;
+      right: 25px;
       padding: 3px 5px;
       border: 1px solid rgba(12, 15, 7, 0.12);
       border-radius: 4px;
-      color: rgba(13, 16, 8, 0.54);
-      font: 800 8px/1 var(--tick-font);
+      color: rgba(13, 16, 8, 0.5);
+      font: 800 7px/1 var(--tick-font);
       letter-spacing: 0.08em;
     }
 
     .auto-button {
-      display: flex;
-      min-height: 82px;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: space-between;
-      gap: 5px;
-      padding: 10px 11px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 100%;
+      min-height: 70px;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
       border: 1px solid var(--line-strong);
       border-radius: 13px;
-      background: linear-gradient(145deg, #232823, #171b18);
+      background:
+        linear-gradient(105deg, rgba(216, 255, 62, 0.035), transparent 44%),
+        linear-gradient(145deg, #232823, #171b18);
       color: var(--text);
       text-align: left;
       cursor: pointer;
@@ -469,9 +688,15 @@
       transition: border-color 160ms ease, background 160ms ease, transform 100ms ease;
     }
 
-    .auto-button:hover:not(:disabled) {
+    .auto-button.can-buy {
       border-color: rgba(216, 255, 62, 0.32);
-      background: linear-gradient(145deg, #293027, #191e1a);
+    }
+
+    .auto-button:hover:not(:disabled) {
+      border-color: rgba(216, 255, 62, 0.42);
+      background:
+        linear-gradient(105deg, rgba(216, 255, 62, 0.07), transparent 48%),
+        linear-gradient(145deg, #293027, #191e1a);
     }
 
     .auto-button:active:not(:disabled) {
@@ -483,26 +708,40 @@
       opacity: 0.58;
     }
 
+    .auto-symbol {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+      background: #101310;
+      font-size: 21px;
+    }
+
+    .auto-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 5px;
+    }
+
     .auto-topline {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      gap: 7px;
+      color: #b4bab0;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
     }
 
     .auto-topline b {
+      padding: 2px 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
       color: #d1d5cc;
-      font: 800 9px/1 var(--tick-font);
-    }
-
-    .auto-title {
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.1;
+      font: 800 8px/1 var(--tick-font);
     }
 
     .auto-output {
@@ -513,19 +752,20 @@
 
     .auto-buy {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-      padding-top: 6px;
-      border-top: 1px solid var(--line);
+      min-width: 54px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      padding-left: 10px;
+      border-left: 1px solid var(--line);
       color: #c2c8be;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
     }
 
     .auto-buy b {
       color: var(--lime);
-      font: 800 11px/1 var(--tick-font);
+      font: 800 13px/1 var(--tick-font);
       font-variant-numeric: tabular-nums;
     }
 
@@ -564,11 +804,11 @@
     .action-card {
       position: relative;
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) auto;
+      grid-template-columns: 50px minmax(0, 1fr) auto;
       gap: 10px;
       align-items: center;
       overflow: hidden;
-      min-height: 78px;
+      min-height: 98px;
       padding: 10px;
       border: 1px solid var(--line);
       border-radius: 13px;
@@ -612,17 +852,23 @@
     .action-icon {
       position: relative;
       display: grid;
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       place-items: center;
       border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 9px;
       background:
         linear-gradient(135deg, rgba(216, 255, 62, 0.09), transparent),
         #0c0e0d;
-      color: #e9ede4;
-      font: 900 14px/1 var(--tick-font);
-      letter-spacing: -0.03em;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+    }
+
+    .action-emoji {
+      display: block;
+      margin-top: -3px;
+      font-size: 27px;
+      line-height: 1;
+      filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.35));
     }
 
     .action-icon small {
@@ -632,6 +878,11 @@
       color: #60675e;
       font: 700 6px/1 var(--tick-font);
       letter-spacing: 0.05em;
+    }
+
+    .action-card.is-locked .action-emoji {
+      filter: grayscale(1);
+      opacity: 0.72;
     }
 
     .action-main {
@@ -703,6 +954,39 @@
 
     .action-meta .kg-meta b {
       color: #c3d679;
+    }
+
+    .level-progress {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .level-track {
+      height: 4px;
+      flex: 1;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.065);
+    }
+
+    .level-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #7d9c29, var(--lime));
+      box-shadow: 0 0 8px rgba(216, 255, 62, 0.45);
+      transition: width 220ms ease;
+    }
+
+    .level-count {
+      flex: none;
+      color: #747c70;
+      font: 800 7px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.05em;
     }
 
     .buy-button {
@@ -955,6 +1239,215 @@
       cursor: pointer;
     }
 
+    .milestone-modal {
+      z-index: 110;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(216, 255, 62, 0.16), transparent 28rem),
+        rgba(3, 5, 4, 0.9);
+    }
+
+    .milestone-burst {
+      position: absolute;
+      inset: -45%;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(216, 255, 62, 0.07) 0deg 7deg,
+        transparent 7deg 22deg
+      );
+      mask-image: radial-gradient(circle, transparent 0 14%, #000 27%, transparent 66%);
+      -webkit-mask-image: radial-gradient(circle, transparent 0 14%, #000 27%, transparent 66%);
+      animation: burst-spin 32s linear infinite;
+      pointer-events: none;
+    }
+
+    .milestone-confetti {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .milestone-confetti i {
+      position: absolute;
+      top: -15vh;
+      width: 5px;
+      height: 15px;
+      border-radius: 2px;
+      background: var(--lime);
+      opacity: 0.86;
+      animation: confetti-fall 3.4s linear infinite;
+    }
+
+    .milestone-confetti i:nth-child(1) {
+      left: 7%;
+      animation-delay: -0.4s;
+    }
+
+    .milestone-confetti i:nth-child(2) {
+      left: 15%;
+      background: var(--orange);
+      animation-delay: -2.1s;
+      animation-duration: 4s;
+    }
+
+    .milestone-confetti i:nth-child(3) {
+      left: 24%;
+      animation-delay: -1.2s;
+      animation-duration: 3.1s;
+    }
+
+    .milestone-confetti i:nth-child(4) {
+      left: 34%;
+      height: 9px;
+      background: #f5f5e9;
+      animation-delay: -2.8s;
+    }
+
+    .milestone-confetti i:nth-child(5) {
+      left: 43%;
+      background: var(--orange);
+      animation-delay: -0.8s;
+      animation-duration: 3.8s;
+    }
+
+    .milestone-confetti i:nth-child(6) {
+      left: 54%;
+      animation-delay: -3.1s;
+      animation-duration: 4.2s;
+    }
+
+    .milestone-confetti i:nth-child(7) {
+      left: 63%;
+      height: 10px;
+      background: #f5f5e9;
+      animation-delay: -1.7s;
+    }
+
+    .milestone-confetti i:nth-child(8) {
+      left: 71%;
+      background: var(--orange);
+      animation-delay: -0.2s;
+      animation-duration: 3.5s;
+    }
+
+    .milestone-confetti i:nth-child(9) {
+      left: 80%;
+      animation-delay: -2.4s;
+      animation-duration: 4.1s;
+    }
+
+    .milestone-confetti i:nth-child(10) {
+      left: 88%;
+      height: 9px;
+      background: #f5f5e9;
+      animation-delay: -1s;
+    }
+
+    .milestone-confetti i:nth-child(11) {
+      left: 94%;
+      background: var(--orange);
+      animation-delay: -3.3s;
+      animation-duration: 3.7s;
+    }
+
+    .milestone-confetti i:nth-child(12) {
+      left: 49%;
+      height: 8px;
+      animation-delay: -2.5s;
+      animation-duration: 4.4s;
+    }
+
+    .milestone-card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 420px);
+      overflow: hidden;
+      padding: 32px 24px 26px;
+      border: 1px solid rgba(216, 255, 62, 0.34);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(216, 255, 62, 0.18), transparent 42%),
+        linear-gradient(180deg, #191f18, #101410);
+      box-shadow:
+        0 0 0 10px rgba(216, 255, 62, 0.025),
+        0 0 75px rgba(216, 255, 62, 0.18),
+        0 35px 100px rgba(0, 0, 0, 0.72);
+      text-align: center;
+      animation: milestone-card-in 480ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .milestone-card::before {
+      position: absolute;
+      top: 0;
+      right: 12%;
+      left: 12%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      content: "";
+      box-shadow: 0 0 20px var(--lime);
+    }
+
+    .milestone-kicker {
+      color: var(--lime);
+      font: 800 9px/1 var(--tick-font);
+      letter-spacing: 0.2em;
+    }
+
+    .milestone-badge {
+      display: block;
+      margin: 17px auto 5px;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 72px;
+      line-height: 1;
+      filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.42));
+      animation: milestone-badge-pop 620ms cubic-bezier(0.2, 1.35, 0.4, 1);
+    }
+
+    .milestone-value {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 7px;
+      color: var(--lime);
+      font-family: var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .milestone-value strong {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .milestone-value span {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+
+    .milestone-card h2 {
+      margin: 17px 0 8px;
+      color: #f6f8ef;
+      font-size: clamp(22px, 7vw, 30px);
+      font-weight: 900;
+      line-height: 1.3;
+      letter-spacing: 0.01em;
+    }
+
+    .milestone-sub {
+      margin: 0;
+      color: #91998e;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .milestone-card .modal-button {
+      margin-top: 22px;
+      box-shadow: 0 0 28px rgba(216, 255, 62, 0.18);
+    }
+
     @keyframes float-up {
       0% {
         opacity: 0;
@@ -990,26 +1483,136 @@
       }
     }
 
+    @keyframes train-rebound {
+      0% {
+        transform: scale(0.91);
+      }
+      55% {
+        transform: scale(1.045);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes character-bounce {
+      0% {
+        transform: translateY(0) scale(1) rotate(0);
+      }
+      32% {
+        transform: translateY(-13px) scale(1.08) rotate(-3deg);
+      }
+      62% {
+        transform: translateY(3px) scale(0.96) rotate(2deg);
+      }
+      82% {
+        transform: translateY(-3px) scale(1.015) rotate(-1deg);
+      }
+      100% {
+        transform: translateY(0) scale(1) rotate(0);
+      }
+    }
+
+    @keyframes character-stage-glow {
+      0%,
+      100% {
+        border-color: var(--line);
+        box-shadow: none;
+      }
+      45% {
+        border-color: rgba(216, 255, 62, 0.48);
+        box-shadow:
+          inset 0 0 30px rgba(216, 255, 62, 0.08),
+          0 0 22px rgba(216, 255, 62, 0.12);
+      }
+    }
+
+    @keyframes burst-spin {
+      to {
+        transform: rotate(1turn);
+      }
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        opacity: 0;
+        transform: translateY(-8vh) rotate(0);
+      }
+      12% {
+        opacity: 0.9;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(122vh) rotate(580deg);
+      }
+    }
+
+    @keyframes milestone-card-in {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.94);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes milestone-badge-pop {
+      0% {
+        opacity: 0;
+        transform: scale(0.35) rotate(-12deg);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.1) rotate(4deg);
+      }
+      100% {
+        transform: scale(1) rotate(0);
+      }
+    }
+
     @media (max-width: 350px) {
       main {
         padding-right: 10px;
         padding-left: 10px;
       }
 
-      .training-grid {
-        grid-template-columns: minmax(0, 1fr) 110px;
+      .character-stage {
+        gap: 10px;
+        padding: 9px;
+      }
+
+      .character-avatar {
+        width: 76px;
+        height: 76px;
+      }
+
+      .character-emoji {
+        font-size: 48px;
+      }
+
+      .character-name-row strong {
+        font-size: 19px;
+      }
+
+      .train-button {
+        width: 156px;
       }
 
       .action-card {
-        grid-template-columns: 42px minmax(0, 1fr) auto;
+        grid-template-columns: 44px minmax(0, 1fr) auto;
         gap: 8px;
         padding: 9px;
       }
 
       .action-icon {
-        width: 42px;
-        height: 42px;
-        font-size: 12px;
+        width: 44px;
+        height: 44px;
+      }
+
+      .action-emoji {
+        font-size: 24px;
       }
 
       .buy-button {
@@ -1063,6 +1666,25 @@
           <span>SQUAT / BENCH / DEADLIFT</span>
           <span class="live-badge">LIVE</span>
         </div>
+        <div class="character-stage" id="characterStage" aria-live="polite">
+          <div class="character-avatar" id="characterAvatar" aria-hidden="true">
+            <span class="character-emoji" id="characterEmoji">💪</span>
+          </div>
+          <div class="character-info">
+            <span class="character-kicker">ATHLETE PROFILE / 当前形态</span>
+            <div class="character-name-row">
+              <strong id="characterTitle">新手上路</strong>
+              <span class="character-form" id="characterForm">FORM 02</span>
+            </div>
+            <div class="evolution-meta">
+              <span id="evolutionText">下一形态 <b>300 KG</b></span>
+              <span id="evolutionPercent">40%</span>
+            </div>
+            <div class="evolution-track" aria-hidden="true">
+              <span class="evolution-fill" id="evolutionBar" style="width: 40%"></span>
+            </div>
+          </div>
+        </div>
         <p class="hero-title" id="totalLabel">三大项总和</p>
         <div class="hero-number">
           <strong id="totalKg">180</strong>
@@ -1096,7 +1718,7 @@
           <div class="rate-pill">自动 +<strong id="passiveRate">1.05</strong> /秒</div>
         </div>
 
-        <div class="training-grid">
+        <div class="training-stage">
           <button class="train-button" id="trainButton" type="button" aria-label="训练，获得力量">
             <span class="train-icon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -1112,11 +1734,14 @@
           </button>
 
           <button class="auto-button" id="autoButton" type="button" aria-label="购买自动训练">
-            <span class="auto-topline">
-              <span>自动训练</span>
-              <b id="autoLevel">Lv.0</b>
+            <span class="auto-symbol" aria-hidden="true">⏱️</span>
+            <span class="auto-copy">
+              <span class="auto-topline">
+                <span>自动训练</span>
+                <b id="autoLevel">Lv.0</b>
+              </span>
+              <span class="auto-output" id="autoOutput">+0 /秒</span>
             </span>
-            <span class="auto-output" id="autoOutput">+0 /秒</span>
             <span class="auto-buy">
               <span id="autoVerb">启用</span>
               <b id="autoCost">25</b>
@@ -1167,6 +1792,25 @@
     </div>
   </div>
 
+  <div class="modal milestone-modal" id="milestoneModal" hidden>
+    <div class="milestone-burst" aria-hidden="true"></div>
+    <div class="milestone-confetti" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="milestone-card" role="dialog" aria-modal="true" aria-labelledby="milestoneMessage">
+      <div class="milestone-kicker" id="milestoneKicker">MILESTONE / 100 KG</div>
+      <span class="milestone-badge" id="milestoneBadge" aria-hidden="true">🎖️</span>
+      <div class="milestone-value">
+        <strong id="milestoneValue">100</strong>
+        <span>KG</span>
+      </div>
+      <h2 id="milestoneMessage">你已经不是细狗了</h2>
+      <p class="milestone-sub">三大项总和首次突破新纪录</p>
+      <button class="modal-button" id="milestoneClose" type="button">继续训练</button>
+    </div>
+  </div>
+
   <script>
     (() => {
       "use strict";
@@ -1185,6 +1829,7 @@
         {
           id: "squat",
           code: "SQ",
+          emoji: "🦵",
           name: "深蹲",
           en: "Back Squat",
           basePrice: 14,
@@ -1198,6 +1843,7 @@
         {
           id: "bench",
           code: "BP",
+          emoji: "🛏️",
           name: "卧推",
           en: "Bench Press",
           basePrice: 20,
@@ -1211,6 +1857,7 @@
         {
           id: "deadlift",
           code: "DL",
+          emoji: "🏋️",
           name: "硬拉",
           en: "Deadlift",
           basePrice: 26,
@@ -1224,6 +1871,7 @@
         {
           id: "legPress",
           code: "LP",
+          emoji: "🦿",
           name: "腿举",
           en: "Leg Press",
           basePrice: 130,
@@ -1236,6 +1884,7 @@
         {
           id: "pullup",
           code: "PU",
+          emoji: "⬆️",
           name: "引体向上",
           en: "Weighted Pull-up",
           basePrice: 700,
@@ -1247,9 +1896,10 @@
         },
         {
           id: "row",
-          code: "BR",
-          name: "杠铃划船",
-          en: "Barbell Row",
+          code: "BC",
+          emoji: "💪",
+          name: "杠铃弯举",
+          en: "Barbell Curl",
           basePrice: 3200,
           baseOutput: 24,
           unlockCost: 4000,
@@ -1260,6 +1910,7 @@
         {
           id: "press",
           code: "OHP",
+          emoji: "🔥",
           name: "站姿推举",
           en: "Overhead Press",
           basePrice: 15000,
@@ -1272,6 +1923,7 @@
         {
           id: "carry",
           code: "FC",
+          emoji: "🧳",
           name: "农夫行走",
           en: "Farmer's Carry",
           basePrice: 65000,
@@ -1284,6 +1936,22 @@
       ];
 
       const CORE_ACTIONS = ACTIONS.filter((action) => action.core);
+
+      const CHARACTER_STAGES = [
+        { id: "sprout", min: 0, max: 100, emoji: "🌱", title: "细狗" },
+        { id: "novice", min: 100, max: 300, emoji: "💪", title: "新手上路" },
+        { id: "veteran", min: 300, max: 500, emoji: "🏋️", title: "铁馆老铁" },
+        { id: "strongman", min: 500, max: 800, emoji: "🐂", title: "力量大佬" },
+        { id: "beast", min: 800, max: Infinity, emoji: "🦍", title: "人类巨兽" }
+      ];
+
+      const MILESTONES = [
+        { threshold: 100, badge: "🥉", message: "你已经不是细狗了" },
+        { threshold: 300, badge: "🎖️", message: "铁馆开始有人跟你点头了" },
+        { threshold: 500, badge: "🏆", message: "教练开始问你练了几年" },
+        { threshold: 800, badge: "👑", message: "你成了新手的阴影" },
+        { threshold: 1000, badge: "🌟", message: "传说级！这个馆为你改了营业时间" }
+      ];
 
       const numberFormatter = new Intl.NumberFormat("zh-CN", {
         maximumFractionDigits: 0
@@ -1329,11 +1997,11 @@
         try {
           rawSave = localStorage.getItem(SAVE_KEY);
         } catch (error) {
-          return { state: freshState, offline: null, storageError: true };
+          return { state: freshState, offline: null, storageError: true, fresh: true };
         }
 
         if (!rawSave) {
-          return { state: freshState, offline: null };
+          return { state: freshState, offline: null, fresh: true };
         }
 
         try {
@@ -1380,6 +2048,7 @@
 
           return {
             state: merged,
+            fresh: false,
             offline: elapsedSeconds >= 5
               ? {
                   elapsedSeconds,
@@ -1395,7 +2064,7 @@
           } catch (removeError) {
             // Storage can be unavailable in private browsing contexts.
           }
-          return { state: freshState, offline: null, corrupted: true };
+          return { state: freshState, offline: null, corrupted: true, fresh: true };
         }
       }
 
@@ -1403,6 +2072,12 @@
       const state = loaded.state;
       let lastTickAt = performance.now();
       let hiddenAt = 0;
+      let lastKnownTotalKg = getThreeLiftTotal();
+      let lastCharacterStageId = null;
+      let characterAnimationTimer = 0;
+      let activeMilestone = null;
+      const milestoneQueue = [];
+      const milestoneSeen = new Set();
       let toastTimer = 0;
       let saveStatusTimer = 0;
 
@@ -1411,6 +2086,14 @@
         squatKg: document.getElementById("squatKg"),
         benchKg: document.getElementById("benchKg"),
         deadliftKg: document.getElementById("deadliftKg"),
+        characterStage: document.getElementById("characterStage"),
+        characterAvatar: document.getElementById("characterAvatar"),
+        characterEmoji: document.getElementById("characterEmoji"),
+        characterTitle: document.getElementById("characterTitle"),
+        characterForm: document.getElementById("characterForm"),
+        evolutionText: document.getElementById("evolutionText"),
+        evolutionPercent: document.getElementById("evolutionPercent"),
+        evolutionBar: document.getElementById("evolutionBar"),
         strength: document.getElementById("strengthValue"),
         passiveRate: document.getElementById("passiveRate"),
         clickGain: document.getElementById("clickGain"),
@@ -1430,6 +2113,12 @@
         offlineGain: document.getElementById("offlineGain"),
         offlineCapNote: document.getElementById("offlineCapNote"),
         offlineClose: document.getElementById("offlineClose"),
+        milestoneModal: document.getElementById("milestoneModal"),
+        milestoneKicker: document.getElementById("milestoneKicker"),
+        milestoneBadge: document.getElementById("milestoneBadge"),
+        milestoneValue: document.getElementById("milestoneValue"),
+        milestoneMessage: document.getElementById("milestoneMessage"),
+        milestoneClose: document.getElementById("milestoneClose"),
         resetButton: document.getElementById("resetButton")
       };
 
@@ -1555,6 +2244,22 @@
         );
       }
 
+      function getCharacterStage(totalKg = getThreeLiftTotal()) {
+        return CHARACTER_STAGES.find((stage) => {
+          return totalKg >= stage.min && totalKg < stage.max;
+        }) || CHARACTER_STAGES[CHARACTER_STAGES.length - 1];
+      }
+
+      function getNextCharacterStage(stage) {
+        const index = CHARACTER_STAGES.findIndex((candidate) => candidate.id === stage.id);
+        return CHARACTER_STAGES[index + 1] || null;
+      }
+
+      function syncModalState() {
+        const hasOpenModal = !elements.offlineModal.hidden || !elements.milestoneModal.hidden;
+        document.body.classList.toggle("modal-open", hasOpenModal);
+      }
+
       function buildActionCards() {
         const fragment = document.createDocumentFragment();
 
@@ -1563,7 +2268,8 @@
           card.className = "action-card";
           card.dataset.actionId = definition.id;
           card.innerHTML =
-            '<div class="action-icon">' + definition.code +
+            '<div class="action-icon">' +
+              '<span class="action-emoji" aria-hidden="true">' + definition.emoji + "</span>" +
               "<small>" + (definition.core ? "SBD" : "AUX") + "</small>" +
             "</div>" +
             '<div class="action-main">' +
@@ -1581,6 +2287,10 @@
                   ? '<span class="kg-meta">+<b>' + definition.kgPerLevel + "</b>KG / 级</span>"
                   : "") +
               "</div>" +
+              '<div class="level-progress" aria-hidden="true">' +
+                '<span class="level-track"><span class="level-fill" data-ref="levelBar"></span></span>' +
+                '<span class="level-count" data-ref="levelCount"></span>' +
+              "</div>" +
             "</div>" +
             '<button class="buy-button" type="button" data-buy="' + definition.id + '">' +
               '<span data-ref="verb"></span>' +
@@ -1592,6 +2302,8 @@
             card,
             level: card.querySelector('[data-ref="level"]'),
             output: card.querySelector('[data-ref="output"]'),
+            levelBar: card.querySelector('[data-ref="levelBar"]'),
+            levelCount: card.querySelector('[data-ref="levelCount"]'),
             verb: card.querySelector('[data-ref="verb"]'),
             price: card.querySelector('[data-ref="price"]'),
             button: card.querySelector('[data-buy]')
@@ -1606,6 +2318,40 @@
         const totalKg = getThreeLiftTotal();
         const rate = getPassiveRate();
         const clickPower = getClickPower();
+        const characterStage = getCharacterStage(totalKg);
+        const nextStage = getNextCharacterStage(characterStage);
+        const stageIndex = CHARACTER_STAGES.findIndex(
+          (stage) => stage.id === characterStage.id
+        );
+        const evolutionProgress = nextStage
+          ? Math.max(
+              0,
+              Math.min(
+                100,
+                ((totalKg - characterStage.min) / (nextStage.min - characterStage.min)) * 100
+              )
+            )
+          : 100;
+
+        if (lastCharacterStageId && lastCharacterStageId !== characterStage.id) {
+          animateCharacterEvolution();
+        }
+        lastCharacterStageId = characterStage.id;
+
+        elements.characterEmoji.textContent = characterStage.emoji;
+        elements.characterTitle.textContent = characterStage.title;
+        elements.characterForm.textContent =
+          "FORM " + String(stageIndex + 1).padStart(2, "0");
+        elements.evolutionText.innerHTML = nextStage
+          ? "下一形态 <b>" + nextStage.min + " KG</b>"
+          : "已达成 <b>最终形态</b>";
+        elements.evolutionPercent.textContent =
+          Math.round(evolutionProgress) + "%";
+        elements.evolutionBar.style.width = evolutionProgress + "%";
+        elements.characterStage.setAttribute(
+          "aria-label",
+          "当前主角形象：" + characterStage.title + "，" + characterStage.emoji
+        );
 
         elements.totalKg.textContent = formatKg(totalKg);
         elements.squatKg.textContent = formatKg(breakdown.squat);
@@ -1614,6 +2360,21 @@
         elements.strength.textContent = formatAmount(state.strength);
         elements.passiveRate.textContent = formatRate(rate);
         elements.clickGain.textContent = "+" + formatAmount(clickPower) + " 力量 / 次";
+
+        if (totalKg > lastKnownTotalKg) {
+          for (const milestone of MILESTONES) {
+            if (
+              lastKnownTotalKg < milestone.threshold &&
+              totalKg >= milestone.threshold &&
+              !milestoneSeen.has(milestone.threshold)
+            ) {
+              milestoneSeen.add(milestone.threshold);
+              milestoneQueue.push(milestone);
+            }
+          }
+          showNextMilestone();
+        }
+        lastKnownTotalKg = totalKg;
 
         const autoPrice = getAutoPrice();
         elements.autoLevel.textContent = "Lv." + state.autoTrainingLevel;
@@ -1643,6 +2404,13 @@
           refs.card.classList.toggle("is-locked", !isUnlocked);
           refs.card.classList.toggle("can-buy", isUnlocked && affordable);
           refs.level.textContent = isUnlocked ? "Lv." + actionState.level : "未解锁";
+          const levelProgress = isUnlocked
+            ? ((actionState.level - 1) % 10) + 1
+            : 0;
+          refs.levelBar.style.width = levelProgress * 10 + "%";
+          refs.levelCount.textContent = isUnlocked
+            ? levelProgress + "/10"
+            : "LOCKED";
           refs.output.innerHTML = isUnlocked
             ? "+<b>" + formatRate(getActionOutput(definition, actionState)) + "</b>/秒"
             : "解锁后 +" + formatRate(definition.baseOutput) + "/秒";
@@ -1736,15 +2504,38 @@
         window.setTimeout(() => refs.card.classList.remove("bump"), 300);
       }
 
+      function replayCharacterBounce() {
+        elements.characterAvatar.classList.remove("is-bouncing");
+        void elements.characterAvatar.offsetWidth;
+        elements.characterAvatar.classList.add("is-bouncing");
+        window.setTimeout(() => {
+          elements.characterAvatar.classList.remove("is-bouncing");
+        }, 440);
+      }
+
+      function animateCharacterEvolution() {
+        window.clearTimeout(characterAnimationTimer);
+        elements.characterStage.classList.remove("is-evolving");
+        void elements.characterStage.offsetWidth;
+        elements.characterStage.classList.add("is-evolving");
+        replayCharacterBounce();
+        characterAnimationTimer = window.setTimeout(() => {
+          elements.characterStage.classList.remove("is-evolving");
+        }, 640);
+      }
+
       function train(event) {
         const gain = getClickPower();
         addStrength(gain);
         state.totalClicks += 1;
 
+        elements.trainButton.classList.remove("is-punching");
+        void elements.trainButton.offsetWidth;
         elements.trainButton.classList.add("is-punching");
         window.setTimeout(() => {
           elements.trainButton.classList.remove("is-punching");
-        }, 110);
+        }, 400);
+        replayCharacterBounce();
 
         const rect = elements.trainButton.getBoundingClientRect();
         const x = event && Number.isFinite(event.clientX) && event.clientX > 0
@@ -1781,6 +2572,32 @@
         }, 2200);
       }
 
+      function showNextMilestone() {
+        if (activeMilestone || milestoneQueue.length === 0) {
+          return;
+        }
+
+        activeMilestone = milestoneQueue.shift();
+        elements.milestoneKicker.textContent =
+          "MILESTONE / " + activeMilestone.threshold + " KG";
+        elements.milestoneBadge.textContent = activeMilestone.badge;
+        elements.milestoneValue.textContent = activeMilestone.threshold;
+        elements.milestoneMessage.textContent = activeMilestone.message;
+        elements.milestoneModal.hidden = false;
+        syncModalState();
+        elements.milestoneClose.focus({ preventScroll: true });
+      }
+
+      function closeMilestone() {
+        if (!activeMilestone) {
+          return;
+        }
+        elements.milestoneModal.hidden = true;
+        activeMilestone = null;
+        syncModalState();
+        window.setTimeout(showNextMilestone, 280);
+      }
+
       function saveGame(showFeedback = false) {
         state.lastSeen = Date.now();
         try {
@@ -1807,11 +2624,13 @@
           ? "离线时间超过 8 小时，已按 8 小时上限结算。"
           : "收益倍率 50% · 上限 8 小时";
         elements.offlineModal.hidden = false;
+        syncModalState();
         elements.offlineClose.focus({ preventScroll: true });
       }
 
       function closeOfflineReport() {
         elements.offlineModal.hidden = true;
+        syncModalState();
         saveGame();
       }
 
@@ -1849,6 +2668,12 @@
           closeOfflineReport();
         }
       });
+      elements.milestoneClose.addEventListener("click", closeMilestone);
+      elements.milestoneModal.addEventListener("click", (event) => {
+        if (event.target === elements.milestoneModal) {
+          closeMilestone();
+        }
+      });
 
       elements.resetButton.addEventListener("click", () => {
         const confirmed = window.confirm("确定清空全部进度并重新开始吗？此操作无法撤销。");
@@ -1880,7 +2705,12 @@
         }
       });
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !elements.offlineModal.hidden) {
+        if (event.key !== "Escape") {
+          return;
+        }
+        if (!elements.milestoneModal.hidden) {
+          closeMilestone();
+        } else if (!elements.offlineModal.hidden) {
           closeOfflineReport();
         }
       });
@@ -1893,6 +2723,11 @@
 
       showOfflineReport(loaded.offline);
       saveGame();
+      if (loaded.fresh) {
+        milestoneSeen.add(MILESTONES[0].threshold);
+        milestoneQueue.push(MILESTONES[0]);
+        showNextMilestone();
+      }
       window.setInterval(tick, TICK_MS);
       window.setInterval(() => saveGame(), SAVE_INTERVAL_MS);
     })();

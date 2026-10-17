@@ -65,6 +65,10 @@
       overflow: hidden;
     }
 
+    body.event-open .app {
+      padding-bottom: calc(240px + env(safe-area-inset-bottom));
+    }
+
     button {
       font: inherit;
     }
@@ -454,6 +458,56 @@
       font-weight: 700;
     }
 
+    .rank-progress {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid var(--line);
+      --rank-color: var(--lime);
+    }
+
+    .rank-progress-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #7e867b;
+      font: 700 9px/1 var(--tick-font);
+      letter-spacing: 0.04em;
+    }
+
+    .rank-progress-head b {
+      color: var(--rank-color);
+      font-weight: 900;
+    }
+
+    .rank-progress-head span:last-child {
+      color: #aab0a5;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .rank-track {
+      height: 6px;
+      margin-top: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .rank-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--rank-color);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--rank-color) 55%, #18200e), var(--rank-color));
+      box-shadow: 0 0 12px rgba(216, 255, 62, 0.35);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--rank-color) 48%, transparent);
+      transition: width 300ms ease;
+    }
+
     .command-panel {
       position: relative;
       margin-top: 10px;
@@ -769,6 +823,341 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .skill-button {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 100%;
+      min-height: 64px;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 122, 47, 0.3);
+      border-radius: 13px;
+      background:
+        radial-gradient(circle at 0% 50%, rgba(255, 122, 47, 0.15), transparent 38%),
+        linear-gradient(145deg, #251b15, #191512);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: opacity 160ms ease, transform 100ms ease, border-color 160ms ease;
+    }
+
+    .skill-button[hidden] {
+      display: none;
+    }
+
+    .skill-button:hover:not(:disabled) {
+      border-color: rgba(255, 122, 47, 0.55);
+    }
+
+    .skill-button:active:not(:disabled) {
+      transform: scale(0.975);
+    }
+
+    .skill-button:disabled {
+      cursor: default;
+    }
+
+    .skill-button.is-active {
+      border-color: rgba(216, 255, 62, 0.56);
+      background:
+        radial-gradient(circle at 0% 50%, rgba(216, 255, 62, 0.19), transparent 40%),
+        linear-gradient(145deg, #202718, #161a13);
+      box-shadow: 0 0 24px rgba(216, 255, 62, 0.1);
+    }
+
+    .skill-emoji {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid rgba(255, 122, 47, 0.2);
+      border-radius: 9px;
+      background: rgba(255, 122, 47, 0.1);
+      font-size: 21px;
+    }
+
+    .skill-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .skill-copy strong {
+      color: #ffe1c9;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .skill-copy span {
+      color: #a68a77;
+      font: 700 9px/1 var(--tick-font);
+    }
+
+    .skill-timer {
+      min-width: 52px;
+      padding-left: 9px;
+      border-left: 1px solid rgba(255, 255, 255, 0.075);
+      color: var(--orange);
+      font: 800 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .skill-button.is-active .skill-timer {
+      color: var(--lime);
+    }
+
+    .competition-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+      padding: 14px;
+      border: 1px solid rgba(255, 211, 90, 0.2);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(255, 211, 90, 0.11), transparent 42%),
+        linear-gradient(150deg, #1b1c16, #121510);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    }
+
+    .panel-kicker {
+      display: block;
+      color: #7f857c;
+      font: 700 8px/1 var(--tick-font);
+      letter-spacing: 0.13em;
+    }
+
+    .competition-title-row {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .rank-badge {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: none;
+      place-items: center;
+      border: 1px solid rgba(255, 211, 90, 0.2);
+      border-radius: 50%;
+      background: rgba(255, 211, 90, 0.07);
+      font-size: 22px;
+    }
+
+    .competition-title-row h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .competition-title-row p {
+      margin: 4px 0 0;
+      color: #858c82;
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .competition-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 7px;
+    }
+
+    .trophy-count {
+      color: #b7a775;
+      font: 800 10px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .trophy-count b {
+      color: #ffe08a;
+    }
+
+    .compete-button {
+      min-width: 104px;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 211, 90, 0.36);
+      border-radius: 9px;
+      background: rgba(255, 211, 90, 0.11);
+      color: #ffe9a4;
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background 160ms ease, transform 100ms ease, opacity 160ms ease;
+    }
+
+    .compete-button:hover:not(:disabled) {
+      background: rgba(255, 211, 90, 0.2);
+    }
+
+    .compete-button:active:not(:disabled) {
+      transform: scale(0.96);
+    }
+
+    .compete-button:disabled {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.025);
+      color: #656c63;
+      cursor: default;
+    }
+
+    .shop-panel {
+      margin-top: 20px;
+    }
+
+    .shop-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding: 0 2px;
+    }
+
+    .shop-heading h2 {
+      margin: 4px 0 0;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+
+    .bonus-wallet {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 211, 90, 0.2);
+      border-radius: 999px;
+      background: rgba(255, 211, 90, 0.06);
+    }
+
+    .bonus-wallet span {
+      color: #9b9276;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .bonus-wallet strong {
+      color: #ffdc7a;
+      font: 900 14px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .shop-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .shop-item {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 68px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(18, 21, 19, 0.94);
+      transition: border-color 160ms ease, opacity 180ms ease, background 180ms ease;
+    }
+
+    .shop-item.can-buy {
+      border-color: rgba(255, 211, 90, 0.2);
+      background:
+        linear-gradient(90deg, rgba(255, 211, 90, 0.035), transparent 48%),
+        rgba(20, 23, 19, 0.96);
+    }
+
+    .shop-item.owned {
+      opacity: 0.45;
+      background: rgba(14, 16, 14, 0.8);
+    }
+
+    .shop-icon {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      border-radius: 8px;
+      background: #0d100e;
+      font-size: 21px;
+    }
+
+    .shop-item.owned .shop-icon {
+      filter: grayscale(1);
+    }
+
+    .shop-main {
+      min-width: 0;
+    }
+
+    .shop-main h3 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .shop-main p {
+      margin: 4px 0 0;
+      color: #828a7f;
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .shop-buy {
+      display: flex;
+      min-width: 72px;
+      min-height: 42px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 8px;
+      border: 1px solid rgba(255, 211, 90, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 211, 90, 0.07);
+      color: #d4c693;
+      font-size: 8px;
+      font-weight: 800;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .shop-buy b {
+      color: #ffdc7a;
+      font: 800 11px/1 var(--tick-font);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .shop-buy:hover:not(:disabled) {
+      border-color: rgba(255, 211, 90, 0.44);
+      background: rgba(255, 211, 90, 0.13);
+    }
+
+    .shop-buy:disabled {
+      border-color: var(--line);
+      background: transparent;
+      color: #666d64;
+      cursor: default;
+    }
+
     .section {
       margin-top: 22px;
     }
@@ -1066,6 +1455,45 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .achievement-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 9px 11px;
+      border: 1px solid rgba(216, 255, 62, 0.12);
+      border-radius: 10px;
+      background: rgba(216, 255, 62, 0.035);
+    }
+
+    .achievement-strip[hidden] {
+      display: none;
+    }
+
+    .achievement-strip > span {
+      flex: none;
+      color: #78806e;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+
+    #achievementList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .achievement-chip {
+      padding: 4px 7px;
+      border: 1px solid rgba(216, 255, 62, 0.2);
+      border-radius: 999px;
+      background: rgba(216, 255, 62, 0.07);
+      color: #c5d995;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
     .footer {
       display: flex;
       align-items: center;
@@ -1133,6 +1561,144 @@
     .toast.is-visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .event-dock[hidden] {
+      display: none;
+    }
+
+    .event-dock {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 85;
+      display: flex;
+      justify-content: center;
+      padding: 0 12px calc(12px + env(safe-area-inset-bottom));
+      pointer-events: none;
+    }
+
+    .event-card {
+      width: min(100%, 536px);
+      overflow: hidden;
+      padding: 14px;
+      border: 1px solid rgba(255, 122, 47, 0.4);
+      border-radius: 17px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255, 122, 47, 0.16), transparent 42%),
+        linear-gradient(165deg, #211a15, #121411 66%);
+      box-shadow:
+        0 0 0 6px rgba(255, 122, 47, 0.025),
+        0 22px 70px rgba(0, 0, 0, 0.62);
+      pointer-events: auto;
+      animation: event-card-in 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .event-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--orange);
+      font: 800 8px/1 var(--tick-font);
+      letter-spacing: 0.13em;
+    }
+
+    .event-topline span:last-child {
+      color: #7d8177;
+      letter-spacing: 0.04em;
+    }
+
+    .event-content {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      margin-top: 11px;
+    }
+
+    .event-emoji {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      place-items: center;
+      border: 1px solid rgba(255, 122, 47, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 122, 47, 0.08);
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 29px;
+    }
+
+    .event-content h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .event-content p {
+      margin: 5px 0 0;
+      color: #979b91;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .event-choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .event-choice {
+      display: flex;
+      min-height: 70px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 7px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #eef0e8;
+      text-align: left;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: border-color 150ms ease, background 150ms ease, transform 100ms ease;
+    }
+
+    .event-choice:hover:not(:disabled) {
+      border-color: rgba(255, 122, 47, 0.42);
+      background: rgba(255, 122, 47, 0.075);
+    }
+
+    .event-choice:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .event-choice:disabled {
+      opacity: 0.42;
+      cursor: default;
+    }
+
+    .event-choice strong {
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .event-choice small {
+      color: #8e9689;
+      font-size: 8px;
+      line-height: 1.45;
+    }
+
+    .event-cost {
+      color: #ffbe8c;
+      font-style: normal;
+      font-weight: 800;
     }
 
     .modal[hidden] {
@@ -1483,6 +2049,17 @@
       }
     }
 
+    @keyframes event-card-in {
+      from {
+        opacity: 0;
+        transform: translateY(26px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     @keyframes train-rebound {
       0% {
         transform: scale(0.91);
@@ -1600,6 +2177,32 @@
         width: 156px;
       }
 
+      .competition-panel {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .competition-actions {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .shop-item {
+        grid-template-columns: 36px minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .shop-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 19px;
+      }
+
+      .event-choice {
+        min-height: 76px;
+        padding: 8px;
+      }
+
       .action-card {
         grid-template-columns: 44px minmax(0, 1fr) auto;
         gap: 8px;
@@ -1704,6 +2307,15 @@
             <strong id="deadliftKg">80</strong><small>KG</small>
           </div>
         </div>
+        <div class="rank-progress" id="rankProgress">
+          <div class="rank-progress-head">
+            <span>下一段位 <b id="rankTarget">青铜</b></span>
+            <span id="rankDistance">已达标</span>
+          </div>
+          <div class="rank-track" aria-hidden="true">
+            <span class="rank-fill" id="rankFill"></span>
+          </div>
+        </div>
       </section>
 
       <section class="command-panel" aria-label="训练控制台">
@@ -1747,7 +2359,47 @@
               <b id="autoCost">25</b>
             </span>
           </button>
+
+          <button class="skill-button" id="preworkoutButton" type="button" hidden>
+            <span class="skill-emoji" aria-hidden="true">⚡</span>
+            <span class="skill-copy">
+              <strong>氮泵</strong>
+              <span id="preworkoutStatus">点击收益 ×2</span>
+            </span>
+            <span class="skill-timer" id="preworkoutTimer">就绪</span>
+          </button>
         </div>
+      </section>
+
+      <section class="competition-panel" aria-labelledby="competitionHeading">
+        <div class="competition-main">
+          <span class="panel-kicker">RANKED / 比赛段位</span>
+          <div class="competition-title-row">
+            <span class="rank-badge" id="currentRankBadge" aria-hidden="true">⚪</span>
+            <div>
+              <h2 id="competitionHeading"><span id="currentRankName">未定级</span></h2>
+              <p id="competitionHint">青铜赛等待你的第一次参赛</p>
+            </div>
+          </div>
+        </div>
+        <div class="competition-actions">
+          <span class="trophy-count">🏆 <b id="trophyCount">0</b></span>
+          <button class="compete-button" id="competeButton" type="button">参赛 · 青铜</button>
+        </div>
+      </section>
+
+      <section class="shop-panel" aria-labelledby="shopHeading">
+        <div class="shop-heading">
+          <div>
+            <span class="panel-kicker">BONUS SHOP / 奖金商店</span>
+            <h2 id="shopHeading">装备与补剂</h2>
+          </div>
+          <div class="bonus-wallet">
+            <span>奖金</span>
+            <strong id="bonusValue">0</strong>
+          </div>
+        </div>
+        <div class="shop-list" id="shopList"></div>
       </section>
 
       <section class="section" aria-labelledby="actionsHeading">
@@ -1769,8 +2421,13 @@
         </div>
       </section>
 
+      <section class="achievement-strip" id="achievementStrip" hidden aria-label="已解锁成就">
+        <span>成就</span>
+        <div id="achievementList"></div>
+      </section>
+
       <footer class="footer">
-        <span class="footer-note">自动保存 · 离线收益按 50% 结算，最多累计 8 小时。</span>
+        <span class="footer-note">自动保存 · 离线收益按 <b id="footerOfflineRate">50%</b> 结算，最多累计 8 小时。</span>
         <button class="reset-button" id="resetButton" type="button">重置存档</button>
       </footer>
     </main>
@@ -1778,11 +2435,28 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <div class="event-dock" id="eventDock" hidden>
+    <article class="event-card" role="dialog" aria-modal="false" aria-labelledby="eventTitle">
+      <div class="event-topline">
+        <span>RANDOM EVENT / 健身房突发事件</span>
+        <span>里程碑弹窗已暂停</span>
+      </div>
+      <div class="event-content">
+        <span class="event-emoji" id="eventEmoji" aria-hidden="true">🏋️</span>
+        <div>
+          <h2 id="eventTitle">健身房突发事件</h2>
+          <p id="eventText"></p>
+        </div>
+      </div>
+      <div class="event-choices" id="eventChoices"></div>
+    </article>
+  </div>
+
   <div class="modal" id="offlineModal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="offlineTitle">
       <div class="modal-kicker">OFFLINE CREDIT / 50%</div>
       <h2 id="offlineTitle">欢迎回到铁馆</h2>
-      <p>离线 <strong id="offlineTime">0 分钟</strong>，自动训练仍在继续。按离线时长的 50% 结算收益。</p>
+      <p>离线 <strong id="offlineTime">0 分钟</strong>，自动训练仍在继续。按离线时长的 <strong id="offlineRateText">50%</strong> 结算收益。</p>
       <div class="offline-gain">
         <strong id="offlineGain">0</strong>
         <span>力量已到账</span>
@@ -1816,14 +2490,19 @@
       "use strict";
 
       const SAVE_KEY = "iron_os_save_v1";
-      const SAVE_VERSION = 1;
+      const SAVE_VERSION = 2;
       const TICK_MS = 100;
       const PRICE_GROWTH = 1.15;
       const AUTO_PRICE_GROWTH = 1.18;
       const AUTO_OUTPUT_PER_LEVEL = 0.5;
       const OFFLINE_RATE = 0.5;
+      const OFFLINE_PROTEIN_RATE = 0.8;
       const OFFLINE_CAP_SECONDS = 8 * 60 * 60;
       const SAVE_INTERVAL_MS = 2000;
+      const ACTION_PRICE_DISCOUNT = 0.7;
+      const AUTO_PRICE_DISCOUNT = 0.7;
+      const EVENT_MIN_DELAY_MS = 60 * 1000;
+      const EVENT_MAX_DELAY_MS = 90 * 1000;
 
       const ACTIONS = [
         {
@@ -1953,6 +2632,267 @@
         { threshold: 1000, badge: "🌟", message: "传说级！这个馆为你改了营业时间" }
       ];
 
+      const RANKS = [
+        { id: "bronze", name: "青铜", emoji: "🥉", threshold: 100, reward: 120, color: "#c98b5b" },
+        { id: "silver", name: "白银", emoji: "🥈", threshold: 300, reward: 300, color: "#ced6df" },
+        { id: "gold", name: "黄金", emoji: "🥇", threshold: 500, reward: 700, color: "#ffd35a" },
+        { id: "platinum", name: "铂金", emoji: "💠", threshold: 800, reward: 1600, color: "#8ff2df" },
+        { id: "diamond", name: "钻石", emoji: "💎", threshold: 1200, reward: 3500, color: "#79b7ff" },
+        { id: "king", name: "王者", emoji: "👑", threshold: 1800, reward: 8000, color: "#d8ff3e" }
+      ];
+
+      const SHOP_ITEMS = [
+        {
+          id: "belt",
+          emoji: "🥋",
+          name: "举重腰带",
+          effect: "全产出 +10%",
+          cost: 150
+        },
+        {
+          id: "creatine",
+          emoji: "🧪",
+          name: "一水肌酸",
+          effect: "全产出 ×1.5",
+          cost: 400
+        },
+        {
+          id: "preworkout",
+          emoji: "⚡",
+          name: "氮泵",
+          effect: "主动：点击收益 ×2，持续 30 秒，冷却 5 分钟",
+          cost: 750
+        },
+        {
+          id: "protein",
+          emoji: "🥛",
+          name: "乳清蛋白粉",
+          effect: "离线收益比例 50% → 80%",
+          cost: 1000
+        },
+        {
+          id: "shoes",
+          emoji: "👟",
+          name: "举重鞋",
+          effect: "动作产出 +25%",
+          cost: 1200
+        },
+        {
+          id: "wraps",
+          emoji: "🧤",
+          name: "助力护腕",
+          effect: "比赛奖金 +50%",
+          cost: 1500
+        },
+        {
+          id: "chalk",
+          emoji: "🧂",
+          name: "防滑镁粉",
+          effect: "解锁动作费用 -20%",
+          cost: 1800
+        },
+        {
+          id: "foamRoller",
+          emoji: "🧻",
+          name: "泡沫轴",
+          effect: "事件负面效果减半",
+          cost: 2200
+        }
+      ];
+
+      const ACHIEVEMENTS = {
+        deserter: {
+          emoji: "🏃",
+          name: "逃兵",
+          description: "练腿日成功开溜"
+        }
+      };
+
+      const GYM_EVENTS = [
+        {
+          id: "legDayEscape",
+          emoji: "🦵",
+          title: "练腿日想溜",
+          text: "深蹲架已经空出来了，但你的大腿还在拒绝配合。",
+          choices: [
+            {
+              label: "硬着头皮练",
+              effectText: "当前力量 +5%",
+              effect: { strengthPercent: 0.05 }
+            },
+            {
+              label: "溜了",
+              effectText: "全产出 -20%（5 分钟），解锁成就「逃兵」",
+              effect: { timedOutput: 0.8, durationSeconds: 300, achievement: "deserter" }
+            }
+          ]
+        },
+        {
+          id: "freeCoaching",
+          emoji: "🧢",
+          title: "大佬免费指点",
+          text: "练得正起劲，一位大佬走过来说：“你这个离心有点意思。”",
+          choices: [
+            {
+              label: "认真听",
+              effectText: "动作产出永久 +3%",
+              effect: { actionBonus: 0.03 }
+            },
+            {
+              label: "谢绝，怕欠人情",
+              effectText: "奖金 +50",
+              effect: { bonus: 50 }
+            }
+          ]
+        },
+        {
+          id: "proteinPrice",
+          emoji: "🥛",
+          title: "蛋白粉涨价",
+          text: "常买的那桶悄悄贵了。老板说这不是涨价，是“浓度升级”。",
+          choices: [
+            {
+              label: "囤货",
+              effectText: "花 100 奖金，全产出 ×2（7 天）",
+              bonusCost: 100,
+              effect: { timedOutput: 2, durationSeconds: 7 * 24 * 60 * 60 }
+            },
+            {
+              label: "不买，正常训练",
+              effectText: "不花奖金，也不吃这个亏",
+              effect: {}
+            }
+          ]
+        },
+        {
+          id: "squatRackTaken",
+          emoji: "🏋️",
+          title: "深蹲架被占",
+          text: "大哥在架子里做二头弯举，还占了三副哑铃。",
+          choices: [
+            {
+              label: "礼貌问能不能轮流",
+              effectText: "当前力量 +3%",
+              effect: { strengthPercent: 0.03 }
+            },
+            {
+              label: "转去史密斯机",
+              effectText: "动作产出 -10%（10 分钟）",
+              effect: { timedAction: 0.9, durationSeconds: 600 }
+            }
+          ]
+        },
+        {
+          id: "acBroken",
+          emoji: "🥵",
+          title: "空调坏了",
+          text: "前台说维修师傅在路上。你感觉自己已经先在路上。",
+          choices: [
+            {
+              label: "继续练，当汗蒸",
+              effectText: "全产出 +15%（10 分钟）",
+              effect: { timedOutput: 1.15, durationSeconds: 600 }
+            },
+            {
+              label: "去更衣室吹风",
+              effectText: "当前力量 -3%",
+              effect: { strengthPercent: -0.03 }
+            }
+          ]
+        },
+        {
+          id: "trainerSale",
+          emoji: "📋",
+          title: "私教课促销",
+          text: "教练说你很有潜力，眼神像在看一台还没开发完的深蹲机。",
+          choices: [
+            {
+              label: "买十节",
+              effectText: "花 120 奖金，点击收益永久 +20%",
+              bonusCost: 120,
+              effect: { clickBonus: 0.2 }
+            },
+            {
+              label: "装没听见",
+              effectText: "省下奖金 +20",
+              effect: { bonus: 20 }
+            }
+          ]
+        },
+        {
+          id: "treadmillSelfie",
+          emoji: "🤳",
+          title: "跑步机自拍哥",
+          text: "他把速度调到 3，滤镜调到 100，堵住了整排跑步机。",
+          choices: [
+            {
+              label: "耐心等他拍完",
+              effectText: "点击收益 +50%（3 分钟）",
+              effect: { timedClick: 1.5, durationSeconds: 180 }
+            },
+            {
+              label: "走过去抢镜",
+              effectText: "意外涨粉，奖金 +30",
+              effect: { bonus: 30 }
+            }
+          ]
+        },
+        {
+          id: "stairsAfterLegDay",
+          emoji: "🪜",
+          title: "昨天练腿，今天下楼梯",
+          text: "每一级台阶都在提醒你：昨天练得确实到位。",
+          choices: [
+            {
+              label: "扶墙倒着下",
+              effectText: "当前力量 +2%",
+              effect: { strengthPercent: 0.02 }
+            },
+            {
+              label: "果断坐电梯",
+              effectText: "全产出 -10%（5 分钟）",
+              effect: { timedOutput: 0.9, durationSeconds: 300 }
+            }
+          ]
+        },
+        {
+          id: "doorBroken",
+          emoji: "🚪",
+          title: "门禁刷不开",
+          text: "前台去上厕所了，门口排起了一支沉默的深蹲队。",
+          choices: [
+            {
+              label: "帮前台看门",
+              effectText: "人情到账，奖金 +40",
+              effect: { bonus: 40 }
+            },
+            {
+              label: "趁乱跟着进去",
+              effectText: "省下排队时间，全产出 +10%（5 分钟）",
+              effect: { timedOutput: 1.1, durationSeconds: 300 }
+            }
+          ]
+        },
+        {
+          id: "hairDryer",
+          emoji: "💨",
+          title: "更衣室吹风机争夺战",
+          text: "你和刚练完肩的大哥同时把手伸向了唯一一台吹风机。",
+          choices: [
+            {
+              label: "让给他",
+              effectText: "大哥很感动，奖金 +30",
+              effect: { bonus: 30 }
+            },
+            {
+              label: "自己先吹",
+              effectText: "发型在线，点击收益 +25%（5 分钟）",
+              effect: { timedClick: 1.25, durationSeconds: 300 }
+            }
+          ]
+        }
+      ];
+
       const numberFormatter = new Intl.NumberFormat("zh-CN", {
         maximumFractionDigits: 0
       });
@@ -1973,6 +2913,10 @@
             unlocked: definition.startUnlocked
           };
         }
+        const shopState = {};
+        for (const item of SHOP_ITEMS) {
+          shopState[item.id] = false;
+        }
 
         return {
           version: SAVE_VERSION,
@@ -1980,6 +2924,24 @@
           totalClicks: 0,
           totalEarned: 0,
           autoTrainingLevel: 0,
+          bonus: 0,
+          competition: {
+            rankIndex: 0,
+            trophies: 0
+          },
+          shop: shopState,
+          buffs: {
+            preworkoutEndsAt: 0,
+            preworkoutReadyAt: 0
+          },
+          eventMods: {
+            nextEventAt: 0,
+            lastEventId: "",
+            actionBonus: 0,
+            clickBonus: 0,
+            achievements: [],
+            effects: []
+          },
           actions: actionState,
           lastSeen: Date.now()
         };
@@ -2018,7 +2980,75 @@
             0,
             Math.floor(safeNumber(saved.autoTrainingLevel))
           );
+          merged.bonus = Math.max(0, safeNumber(saved.bonus));
           merged.lastSeen = Math.max(0, safeNumber(saved.lastSeen, Date.now()));
+
+          if (saved.competition && typeof saved.competition === "object") {
+            merged.competition.rankIndex = Math.max(
+              0,
+              Math.min(RANKS.length, Math.floor(safeNumber(saved.competition.rankIndex)))
+            );
+            merged.competition.trophies = Math.max(
+              0,
+              Math.floor(safeNumber(saved.competition.trophies))
+            );
+          }
+
+          for (const item of SHOP_ITEMS) {
+            merged.shop[item.id] = Boolean(saved.shop && saved.shop[item.id]);
+          }
+
+          if (saved.buffs && typeof saved.buffs === "object") {
+            merged.buffs.preworkoutEndsAt = Math.max(
+              0,
+              safeNumber(saved.buffs.preworkoutEndsAt)
+            );
+            merged.buffs.preworkoutReadyAt = Math.max(
+              0,
+              safeNumber(saved.buffs.preworkoutReadyAt)
+            );
+          }
+
+          if (saved.eventMods && typeof saved.eventMods === "object") {
+            merged.eventMods.nextEventAt = Math.max(
+              0,
+              safeNumber(saved.eventMods.nextEventAt)
+            );
+            merged.eventMods.lastEventId =
+              typeof saved.eventMods.lastEventId === "string"
+                ? saved.eventMods.lastEventId
+                : "";
+            merged.eventMods.actionBonus = Math.max(
+              0,
+              safeNumber(saved.eventMods.actionBonus)
+            );
+            merged.eventMods.clickBonus = Math.max(
+              0,
+              safeNumber(saved.eventMods.clickBonus)
+            );
+            if (Array.isArray(saved.eventMods.achievements)) {
+              merged.eventMods.achievements = saved.eventMods.achievements.filter(
+                (id) => typeof id === "string" && ACHIEVEMENTS[id]
+              );
+            }
+            if (Array.isArray(saved.eventMods.effects)) {
+              merged.eventMods.effects = saved.eventMods.effects
+                .filter((effect) => {
+                  return effect
+                    && typeof effect === "object"
+                    && ["output", "action", "click"].includes(effect.type)
+                    && Number.isFinite(Number(effect.multiplier))
+                    && Number(effect.multiplier) > 0
+                    && Number.isFinite(Number(effect.endsAt));
+                })
+                .map((effect) => ({
+                  type: effect.type,
+                  multiplier: Number(effect.multiplier),
+                  endsAt: Number(effect.endsAt),
+                  label: typeof effect.label === "string" ? effect.label : "临时效果"
+                }));
+            }
+          }
 
           for (const definition of ACTIONS) {
             const savedAction = saved.actions && saved.actions[definition.id];
@@ -2039,8 +3069,9 @@
           const now = Date.now();
           const elapsedSeconds = Math.max(0, (now - merged.lastSeen) / 1000);
           const creditedSeconds = Math.min(elapsedSeconds, OFFLINE_CAP_SECONDS);
-          const rate = getPassiveRate(merged);
-          const gain = rate * creditedSeconds * OFFLINE_RATE;
+          const rate = getPassiveRate(merged, merged.lastSeen, false);
+          const offlineRate = getOfflineRate(merged);
+          const gain = rate * creditedSeconds * offlineRate;
 
           merged.strength += gain;
           merged.totalEarned += gain;
@@ -2054,6 +3085,7 @@
                   elapsedSeconds,
                   creditedSeconds,
                   gain,
+                  offlineRate,
                   capped: elapsedSeconds > OFFLINE_CAP_SECONDS
                 }
               : null
@@ -2076,8 +3108,10 @@
       let lastCharacterStageId = null;
       let characterAnimationTimer = 0;
       let activeMilestone = null;
+      let activeEvent = null;
       const milestoneQueue = [];
       const milestoneSeen = new Set();
+      let achievementRenderKey = "";
       let toastTimer = 0;
       let saveStatusTimer = 0;
 
@@ -2094,6 +3128,10 @@
         evolutionText: document.getElementById("evolutionText"),
         evolutionPercent: document.getElementById("evolutionPercent"),
         evolutionBar: document.getElementById("evolutionBar"),
+        rankProgress: document.getElementById("rankProgress"),
+        rankTarget: document.getElementById("rankTarget"),
+        rankDistance: document.getElementById("rankDistance"),
+        rankFill: document.getElementById("rankFill"),
         strength: document.getElementById("strengthValue"),
         passiveRate: document.getElementById("passiveRate"),
         clickGain: document.getElementById("clickGain"),
@@ -2103,14 +3141,30 @@
         autoOutput: document.getElementById("autoOutput"),
         autoVerb: document.getElementById("autoVerb"),
         autoCost: document.getElementById("autoCost"),
+        preworkoutButton: document.getElementById("preworkoutButton"),
+        preworkoutStatus: document.getElementById("preworkoutStatus"),
+        preworkoutTimer: document.getElementById("preworkoutTimer"),
+        currentRankBadge: document.getElementById("currentRankBadge"),
+        currentRankName: document.getElementById("currentRankName"),
+        competitionHint: document.getElementById("competitionHint"),
+        trophyCount: document.getElementById("trophyCount"),
+        competeButton: document.getElementById("competeButton"),
+        bonusValue: document.getElementById("bonusValue"),
+        shopList: document.getElementById("shopList"),
         actionList: document.getElementById("actionList"),
         clickCount: document.getElementById("clickCount"),
         totalEarned: document.getElementById("totalEarned"),
         saveStatus: document.getElementById("saveStatus"),
         toast: document.getElementById("toast"),
+        eventDock: document.getElementById("eventDock"),
+        eventEmoji: document.getElementById("eventEmoji"),
+        eventTitle: document.getElementById("eventTitle"),
+        eventText: document.getElementById("eventText"),
+        eventChoices: document.getElementById("eventChoices"),
         offlineModal: document.getElementById("offlineModal"),
         offlineTime: document.getElementById("offlineTime"),
         offlineGain: document.getElementById("offlineGain"),
+        offlineRateText: document.getElementById("offlineRateText"),
         offlineCapNote: document.getElementById("offlineCapNote"),
         offlineClose: document.getElementById("offlineClose"),
         milestoneModal: document.getElementById("milestoneModal"),
@@ -2119,10 +3173,14 @@
         milestoneValue: document.getElementById("milestoneValue"),
         milestoneMessage: document.getElementById("milestoneMessage"),
         milestoneClose: document.getElementById("milestoneClose"),
+        achievementStrip: document.getElementById("achievementStrip"),
+        achievementList: document.getElementById("achievementList"),
+        footerOfflineRate: document.getElementById("footerOfflineRate"),
         resetButton: document.getElementById("resetButton")
       };
 
       const actionRefs = new Map();
+      const shopRefs = new Map();
 
       function formatAmount(value) {
         const safeValue = Math.max(0, safeNumber(value));
@@ -2194,21 +3252,119 @@
         if (!actionState || !actionState.unlocked) {
           return 0;
         }
-        return definition.baseOutput * actionState.level;
+        return definition.baseOutput * actionState.level
+          * getActionOutputMultiplier()
+          * getGlobalOutputMultiplier();
       }
 
-      function getAutoOutput(gameState = state) {
-        return gameState.autoTrainingLevel * AUTO_OUTPUT_PER_LEVEL;
+      function isShopOwned(itemId, gameState = state) {
+        return Boolean(gameState.shop && gameState.shop[itemId]);
       }
 
-      function getActionOutputTotal(gameState = state) {
+      function getOfflineRate(gameState = state) {
+        return isShopOwned("protein", gameState)
+          ? OFFLINE_PROTEIN_RATE
+          : OFFLINE_RATE;
+      }
+
+      function getTimedMultiplier(type, gameState = state, now = Date.now()) {
+        const effects = gameState.eventMods && gameState.eventMods.effects;
+        if (!Array.isArray(effects)) {
+          return 1;
+        }
+        return effects.reduce((multiplier, effect) => {
+          if (effect.type === type && effect.endsAt > now) {
+            return multiplier * effect.multiplier;
+          }
+          return multiplier;
+        }, 1);
+      }
+
+      function getActionOutputMultiplier(gameState = state, includeTemporary = true) {
+        const eventBonus = safeNumber(gameState.eventMods && gameState.eventMods.actionBonus);
+        const shoesBonus = isShopOwned("shoes", gameState) ? 0.25 : 0;
+        const timedBonus = includeTemporary
+          ? getTimedMultiplier("action", gameState)
+          : 1;
+        return (1 + eventBonus + shoesBonus) * timedBonus;
+      }
+
+      function getGlobalOutputMultiplier(gameState = state, includeTemporary = true) {
+        let multiplier = 1;
+        if (isShopOwned("belt", gameState)) {
+          multiplier *= 1.1;
+        }
+        if (isShopOwned("creatine", gameState)) {
+          multiplier *= 1.5;
+        }
+        if (includeTemporary) {
+          multiplier *= getTimedMultiplier("output", gameState);
+        }
+        return multiplier;
+      }
+
+      function getAutoOutput(gameState = state, includeTemporary = true) {
+        return gameState.autoTrainingLevel
+          * AUTO_OUTPUT_PER_LEVEL
+          * getGlobalOutputMultiplier(gameState, includeTemporary);
+      }
+
+      function getActionOutputTotal(gameState = state, includeTemporary = true) {
         return ACTIONS.reduce((total, definition) => {
-          return total + getActionOutput(definition, gameState.actions[definition.id]);
+          const actionState = gameState.actions[definition.id];
+          if (!actionState || !actionState.unlocked) {
+            return total;
+          }
+          return total
+            + definition.baseOutput
+              * actionState.level
+              * getActionOutputMultiplier(gameState, includeTemporary)
+              * getGlobalOutputMultiplier(gameState, includeTemporary);
         }, 0);
       }
 
-      function getPassiveRate(gameState = state) {
-        return getActionOutputTotal(gameState) + getAutoOutput(gameState);
+      function getPassiveRate(gameState = state, now = Date.now(), includeTemporary = true) {
+        const effects = includeTemporary
+          ? gameState.eventMods && gameState.eventMods.effects
+          : [];
+        let outputMultiplier = 1;
+        if (isShopOwned("belt", gameState)) {
+          outputMultiplier *= 1.1;
+        }
+        if (isShopOwned("creatine", gameState)) {
+          outputMultiplier *= 1.5;
+        }
+        if (Array.isArray(effects)) {
+          outputMultiplier *= effects.reduce((multiplier, effect) => {
+            return effect.type === "output" && effect.endsAt > now
+              ? multiplier * effect.multiplier
+              : multiplier;
+          }, 1);
+        }
+
+        let actionMultiplier = 1
+          + safeNumber(gameState.eventMods && gameState.eventMods.actionBonus)
+          + (isShopOwned("shoes", gameState) ? 0.25 : 0);
+        if (Array.isArray(effects)) {
+          actionMultiplier *= effects.reduce((multiplier, effect) => {
+            return effect.type === "action" && effect.endsAt > now
+              ? multiplier * effect.multiplier
+              : multiplier;
+          }, 1);
+        }
+
+        const actionRate = ACTIONS.reduce((total, definition) => {
+          const actionState = gameState.actions[definition.id];
+          if (!actionState || !actionState.unlocked) {
+            return total;
+          }
+          return total + definition.baseOutput * actionState.level;
+        }, 0) * actionMultiplier * outputMultiplier;
+
+        const autoRate = gameState.autoTrainingLevel
+          * AUTO_OUTPUT_PER_LEVEL
+          * outputMultiplier;
+        return actionRate + autoRate;
       }
 
       function getLiftBreakdown(gameState = state) {
@@ -2228,19 +3384,47 @@
         }, 0);
       }
 
-      function getClickPower(gameState = state) {
-        return 1 + Math.floor(Math.sqrt(getThreeLiftTotal(gameState) / 100));
+      function getClickPower(gameState = state, now = Date.now()) {
+        const basePower = 1 + Math.floor(Math.sqrt(getThreeLiftTotal(gameState) / 100));
+        const permanentBonus = 1
+          + safeNumber(gameState.eventMods && gameState.eventMods.clickBonus);
+        const timedMultiplier = getTimedMultiplier("click", gameState, now);
+        const preworkoutMultiplier =
+          isShopOwned("preworkout", gameState)
+            && gameState.buffs.preworkoutEndsAt > now
+            ? 2
+            : 1;
+        return basePower * permanentBonus * timedMultiplier * preworkoutMultiplier;
       }
 
       function getActionPrice(definition, actionState) {
         return Math.ceil(
-          definition.basePrice * Math.pow(PRICE_GROWTH, actionState.level)
+          definition.basePrice
+            * ACTION_PRICE_DISCOUNT
+            * Math.pow(PRICE_GROWTH, actionState.level)
+        );
+      }
+
+      function getActionUnlockCost(definition) {
+        const chalkMultiplier = isShopOwned("chalk") ? 0.8 : 1;
+        const earlyUnlockCost = {
+          legPress: 100,
+          pullup: 300,
+          row: 800
+        }[definition.id];
+        const baseCost = Number.isFinite(earlyUnlockCost)
+          ? earlyUnlockCost
+          : definition.unlockCost * ACTION_PRICE_DISCOUNT;
+        return Math.ceil(
+          baseCost * chalkMultiplier
         );
       }
 
       function getAutoPrice(gameState = state) {
         return Math.ceil(
-          25 * Math.pow(AUTO_PRICE_GROWTH, gameState.autoTrainingLevel)
+          25
+            * AUTO_PRICE_DISCOUNT
+            * Math.pow(AUTO_PRICE_GROWTH, gameState.autoTrainingLevel)
         );
       }
 
@@ -2255,9 +3439,52 @@
         return CHARACTER_STAGES[index + 1] || null;
       }
 
+      function getNextRank(gameState = state) {
+        return RANKS[gameState.competition.rankIndex] || null;
+      }
+
+      function getCurrentRank(gameState = state) {
+        const index = gameState.competition.rankIndex - 1;
+        return index >= 0 ? RANKS[index] : null;
+      }
+
+      function formatCooldown(milliseconds) {
+        const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000));
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return minutes + ":" + String(seconds).padStart(2, "0");
+      }
+
       function syncModalState() {
         const hasOpenModal = !elements.offlineModal.hidden || !elements.milestoneModal.hidden;
         document.body.classList.toggle("modal-open", hasOpenModal);
+      }
+
+      function buildShopItems() {
+        const fragment = document.createDocumentFragment();
+        for (const item of SHOP_ITEMS) {
+          const card = document.createElement("article");
+          card.className = "shop-item";
+          card.dataset.shopId = item.id;
+          card.innerHTML =
+            '<span class="shop-icon" aria-hidden="true">' + item.emoji + "</span>" +
+            '<div class="shop-main">' +
+              "<h3>" + item.name + "</h3>" +
+              "<p>" + item.effect + "</p>" +
+            "</div>" +
+            '<button class="shop-buy" type="button" data-shop="' + item.id + '">' +
+              '<span data-ref="shopVerb">购买</span>' +
+              '<b data-ref="shopCost"></b>' +
+            "</button>";
+          fragment.appendChild(card);
+          shopRefs.set(item.id, {
+            card,
+            button: card.querySelector("[data-shop]"),
+            verb: card.querySelector('[data-ref="shopVerb"]'),
+            cost: card.querySelector('[data-ref="shopCost"]')
+          });
+        }
+        elements.shopList.appendChild(fragment);
       }
 
       function buildActionCards() {
@@ -2313,6 +3540,123 @@
         elements.actionList.appendChild(fragment);
       }
 
+      function updateCompetitionUI(totalKg) {
+        const nextRank = getNextRank();
+        const currentRank = getCurrentRank();
+        const previousThreshold = currentRank ? currentRank.threshold : 0;
+        const nextThreshold = nextRank ? nextRank.threshold : previousThreshold;
+        const distance = nextRank ? Math.max(0, nextRank.threshold - totalKg) : 0;
+        const progress = nextRank
+          ? Math.max(
+              0,
+              Math.min(
+                100,
+                ((totalKg - previousThreshold) / (nextThreshold - previousThreshold)) * 100
+              )
+            )
+          : 100;
+
+        elements.currentRankBadge.textContent = currentRank
+          ? currentRank.emoji
+          : "⚪";
+        elements.currentRankName.textContent = currentRank
+          ? currentRank.name
+          : "未定级";
+        elements.trophyCount.textContent = state.competition.trophies;
+        elements.rankProgress.style.setProperty(
+          "--rank-color",
+          nextRank ? nextRank.color : (currentRank ? currentRank.color : "#d8ff3e")
+        );
+        elements.rankTarget.textContent = nextRank ? nextRank.name : "已封王";
+        elements.rankDistance.textContent = nextRank
+          ? distance > 0
+            ? "还差 " + formatKg(distance) + " KG"
+            : "已达标 · 可参赛"
+          : "全部段位完成";
+        elements.rankFill.style.width = progress + "%";
+
+        if (!nextRank) {
+          elements.competitionHint.textContent = "六段全制霸，铁馆已经装不下你了";
+          elements.competeButton.textContent = "已加冕王者";
+          elements.competeButton.disabled = true;
+          return;
+        }
+
+        const reward = Math.round(
+          nextRank.reward * (isShopOwned("wraps") ? 1.5 : 1)
+        );
+        elements.competitionHint.textContent = distance > 0
+          ? nextRank.name + "赛门槛 " + nextRank.threshold + " KG · 奖励 "
+            + formatCompact(reward) + " 奖金"
+          : "已达标 · 奖励 " + formatCompact(reward) + " 奖金 + 奖杯 ×1";
+        elements.competeButton.textContent = distance > 0
+          ? "未达标 · 差 " + formatKg(distance) + " KG"
+          : "参赛 · " + nextRank.name;
+        elements.competeButton.disabled = distance > 0;
+      }
+
+      function updateShopUI() {
+        elements.bonusValue.textContent = formatCompact(state.bonus);
+        for (const item of SHOP_ITEMS) {
+          const refs = shopRefs.get(item.id);
+          const owned = isShopOwned(item.id);
+          const affordable = state.bonus >= item.cost;
+          refs.card.classList.toggle("owned", owned);
+          refs.card.classList.toggle("can-buy", !owned && affordable);
+          refs.button.disabled = owned || !affordable;
+          refs.verb.textContent = owned ? "已拥有" : "购买";
+          refs.cost.textContent = owned ? "✓" : formatCompact(item.cost);
+          refs.button.setAttribute(
+            "aria-label",
+            owned
+              ? item.name + "，已拥有"
+              : "购买" + item.name + "，消耗 " + item.cost + " 奖金"
+          );
+        }
+      }
+
+      function updatePreworkoutUI(now = Date.now()) {
+        const owned = isShopOwned("preworkout");
+        elements.preworkoutButton.hidden = !owned;
+        if (!owned) {
+          return;
+        }
+
+        const active = state.buffs.preworkoutEndsAt > now;
+        const coolingDown = state.buffs.preworkoutReadyAt > now;
+        elements.preworkoutButton.classList.toggle("is-active", active);
+        elements.preworkoutButton.disabled = active || coolingDown;
+
+        if (active) {
+          elements.preworkoutStatus.textContent = "点击收益 ×2 · 生效中";
+          elements.preworkoutTimer.textContent =
+            Math.ceil((state.buffs.preworkoutEndsAt - now) / 1000) + "s";
+        } else if (coolingDown) {
+          elements.preworkoutStatus.textContent = "点击收益 ×2 · 冷却中";
+          elements.preworkoutTimer.textContent = formatCooldown(
+            state.buffs.preworkoutReadyAt - now
+          );
+        } else {
+          elements.preworkoutStatus.textContent = "点击收益 ×2 · 持续 30 秒";
+          elements.preworkoutTimer.textContent = "就绪";
+        }
+      }
+
+      function renderAchievements() {
+        const ids = state.eventMods.achievements;
+        const key = ids.join("|");
+        if (key === achievementRenderKey) {
+          return;
+        }
+        achievementRenderKey = key;
+        elements.achievementStrip.hidden = ids.length === 0;
+        elements.achievementList.innerHTML = ids.map((id) => {
+          const achievement = ACHIEVEMENTS[id];
+          return '<span class="achievement-chip">' + achievement.emoji + " "
+            + achievement.name + "</span>";
+        }).join("");
+      }
+
       function updateUI() {
         const breakdown = getLiftBreakdown();
         const totalKg = getThreeLiftTotal();
@@ -2360,6 +3704,12 @@
         elements.strength.textContent = formatAmount(state.strength);
         elements.passiveRate.textContent = formatRate(rate);
         elements.clickGain.textContent = "+" + formatAmount(clickPower) + " 力量 / 次";
+        updateCompetitionUI(totalKg);
+        updateShopUI();
+        updatePreworkoutUI();
+        renderAchievements();
+        elements.footerOfflineRate.textContent =
+          Math.round(getOfflineRate() * 100) + "%";
 
         if (totalKg > lastKnownTotalKg) {
           for (const milestone of MILESTONES) {
@@ -2398,7 +3748,7 @@
           const isUnlocked = actionState.unlocked;
           const price = isUnlocked
             ? getActionPrice(definition, actionState)
-            : definition.unlockCost;
+            : getActionUnlockCost(definition);
           const affordable = state.strength >= price;
 
           refs.card.classList.toggle("is-locked", !isUnlocked);
@@ -2441,7 +3791,7 @@
         }
 
         if (!actionState.unlocked) {
-          const unlockCost = definition.unlockCost;
+          const unlockCost = getActionUnlockCost(definition);
           if (state.strength < unlockCost) {
             return;
           }
@@ -2491,6 +3841,63 @@
         );
         updateUI();
         saveGame(true);
+      }
+
+      function enterCompetition() {
+        const rank = getNextRank();
+        if (!rank || getThreeLiftTotal() < rank.threshold) {
+          return;
+        }
+
+        const prize = Math.round(
+          rank.reward * (isShopOwned("wraps") ? 1.5 : 1)
+        );
+        state.bonus += prize;
+        state.competition.rankIndex += 1;
+        state.competition.trophies += 1;
+        showToast(
+          rank.name + "赛结算 · 奖金 +" + formatCompact(prize) + " · 奖杯 +1"
+        );
+        updateUI();
+        saveGame(true);
+      }
+
+      function buyShopItem(item) {
+        if (isShopOwned(item.id) || state.bonus < item.cost) {
+          return;
+        }
+        state.bonus -= item.cost;
+        state.shop[item.id] = true;
+        showToast(item.name + "已入手 · " + item.effect);
+        updateUI();
+        saveGame(true);
+      }
+
+      function activatePreworkout() {
+        if (!isShopOwned("preworkout")) {
+          return;
+        }
+        const now = Date.now();
+        if (
+          state.buffs.preworkoutEndsAt > now
+          || state.buffs.preworkoutReadyAt > now
+        ) {
+          return;
+        }
+        state.buffs.preworkoutEndsAt = now + 30 * 1000;
+        state.buffs.preworkoutReadyAt = now + 5 * 60 * 1000;
+        showToast("氮泵启动 · 点击收益 ×2，持续 30 秒");
+        updateUI();
+        saveGame(true);
+      }
+
+      function unlockAchievement(id) {
+        if (!ACHIEVEMENTS[id] || state.eventMods.achievements.includes(id)) {
+          return false;
+        }
+        state.eventMods.achievements.push(id);
+        achievementRenderKey = "";
+        return true;
       }
 
       function animateCard(actionId) {
@@ -2573,7 +3980,7 @@
       }
 
       function showNextMilestone() {
-        if (activeMilestone || milestoneQueue.length === 0) {
+        if (activeMilestone || activeEvent || milestoneQueue.length === 0) {
           return;
         }
 
@@ -2595,6 +4002,151 @@
         elements.milestoneModal.hidden = true;
         activeMilestone = null;
         syncModalState();
+        window.setTimeout(showNextMilestone, 280);
+      }
+
+      function getRandomEventDelay() {
+        return EVENT_MIN_DELAY_MS
+          + Math.random() * (EVENT_MAX_DELAY_MS - EVENT_MIN_DELAY_MS);
+      }
+
+      function scheduleNextEvent(delay = getRandomEventDelay()) {
+        state.eventMods.nextEventAt = Date.now() + delay;
+      }
+
+      function ensureEventSchedule() {
+        if (
+          !Number.isFinite(state.eventMods.nextEventAt)
+          || state.eventMods.nextEventAt <= Date.now()
+        ) {
+          scheduleNextEvent();
+        }
+      }
+
+      function maybeSpawnEvent() {
+        if (
+          activeEvent
+          || activeMilestone
+          || !elements.offlineModal.hidden
+          || milestoneQueue.length > 0
+          || Date.now() < state.eventMods.nextEventAt
+        ) {
+          return;
+        }
+
+        const available = GYM_EVENTS.filter(
+          (event) => event.id !== state.eventMods.lastEventId
+        );
+        const pool = available.length > 0 ? available : GYM_EVENTS;
+        const definition = pool[Math.floor(Math.random() * pool.length)];
+        activeEvent = definition;
+        state.eventMods.lastEventId = definition.id;
+        scheduleNextEvent();
+        renderEventCard(definition);
+        elements.eventDock.hidden = false;
+        document.body.classList.add("event-open");
+      }
+
+      function renderEventCard(definition) {
+        elements.eventEmoji.textContent = definition.emoji;
+        elements.eventTitle.textContent = definition.title;
+        elements.eventText.textContent = definition.text;
+        elements.eventChoices.innerHTML = definition.choices.map((choice, index) => {
+          const insufficient = choice.bonusCost && state.bonus < choice.bonusCost;
+          return '<button class="event-choice" type="button" data-choice="' + index + '"'
+            + (insufficient ? " disabled" : "") + ">"
+            + "<strong>" + choice.label + "</strong>"
+            + "<small>" + choice.effectText
+            + (choice.bonusCost
+              ? '<br><em class="event-cost">'
+                + (insufficient ? "奖金不足 · " : "消耗 ")
+                + choice.bonusCost + " 奖金</em>"
+              : "")
+            + "</small></button>";
+        }).join("");
+      }
+
+      function applyEventEffect(effect, eventDefinition, choice) {
+        if (!effect) {
+          return;
+        }
+
+        if (effect.strengthPercent) {
+          const adjustedPercent =
+            effect.strengthPercent < 0 && isShopOwned("foamRoller")
+              ? effect.strengthPercent * 0.5
+              : effect.strengthPercent;
+          const delta = state.strength * adjustedPercent;
+          state.strength = Math.max(0, state.strength + delta);
+          if (delta > 0) {
+            state.totalEarned += delta;
+          }
+        }
+
+        if (effect.bonus) {
+          state.bonus += effect.bonus;
+        }
+
+        if (effect.actionBonus) {
+          state.eventMods.actionBonus += effect.actionBonus;
+        }
+
+        if (effect.clickBonus) {
+          state.eventMods.clickBonus += effect.clickBonus;
+        }
+
+        const timedEffects = [
+          { key: "timedOutput", type: "output" },
+          { key: "timedAction", type: "action" },
+          { key: "timedClick", type: "click" }
+        ];
+        for (const timedEffect of timedEffects) {
+          if (!effect[timedEffect.key]) {
+            continue;
+          }
+          let multiplier = effect[timedEffect.key];
+          if (multiplier < 1 && isShopOwned("foamRoller")) {
+            multiplier = 1 - (1 - multiplier) * 0.5;
+          }
+          state.eventMods.effects.push({
+            type: timedEffect.type,
+            multiplier,
+            endsAt: Date.now() + effect.durationSeconds * 1000,
+            label: eventDefinition.title + " · " + choice.label
+          });
+        }
+
+        if (effect.achievement) {
+          unlockAchievement(effect.achievement);
+        }
+      }
+
+      function resolveEvent(choiceIndex) {
+        if (!activeEvent) {
+          return;
+        }
+        const eventDefinition = activeEvent;
+        const choice = eventDefinition.choices[choiceIndex];
+        if (!choice) {
+          return;
+        }
+        if (choice.bonusCost && state.bonus < choice.bonusCost) {
+          showToast("奖金不够，换个选项吧");
+          renderEventCard(eventDefinition);
+          return;
+        }
+
+        if (choice.bonusCost) {
+          state.bonus -= choice.bonusCost;
+        }
+        applyEventEffect(choice.effect, eventDefinition, choice);
+        elements.eventDock.hidden = true;
+        document.body.classList.remove("event-open");
+        activeEvent = null;
+        scheduleNextEvent();
+        showToast(eventDefinition.title + " · 已选择「" + choice.label + "」");
+        updateUI();
+        saveGame(true);
         window.setTimeout(showNextMilestone, 280);
       }
 
@@ -2620,9 +4172,13 @@
         }
         elements.offlineTime.textContent = formatDuration(report.creditedSeconds);
         elements.offlineGain.textContent = formatAmount(report.gain);
+        elements.offlineRateText.textContent =
+          Math.round((report.offlineRate || OFFLINE_RATE) * 100) + "%";
         elements.offlineCapNote.textContent = report.capped
           ? "离线时间超过 8 小时，已按 8 小时上限结算。"
-          : "收益倍率 50% · 上限 8 小时";
+          : "收益倍率 "
+            + Math.round((report.offlineRate || OFFLINE_RATE) * 100)
+            + "% · 上限 8 小时";
         elements.offlineModal.hidden = false;
         syncModalState();
         elements.offlineClose.focus({ preventScroll: true });
@@ -2642,15 +4198,35 @@
         const deltaSeconds = Math.min(1, Math.max(0, (now - lastTickAt) / 1000));
         lastTickAt = now;
 
+        if (state.eventMods.effects.some((effect) => effect.endsAt <= Date.now())) {
+          state.eventMods.effects = state.eventMods.effects.filter(
+            (effect) => effect.endsAt > Date.now()
+          );
+        }
         addStrength(getPassiveRate() * deltaSeconds);
         updateUI();
+        maybeSpawnEvent();
       }
 
+      buildShopItems();
       buildActionCards();
+      ensureEventSchedule();
       updateUI();
 
       elements.trainButton.addEventListener("click", train);
       elements.autoButton.addEventListener("click", buyAutoTraining);
+      elements.competeButton.addEventListener("click", enterCompetition);
+      elements.preworkoutButton.addEventListener("click", activatePreworkout);
+      elements.shopList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-shop]");
+        if (!button) {
+          return;
+        }
+        const item = SHOP_ITEMS.find((candidate) => candidate.id === button.dataset.shop);
+        if (item) {
+          buyShopItem(item);
+        }
+      });
       elements.actionList.addEventListener("click", (event) => {
         const button = event.target.closest("[data-buy]");
         if (!button) {
@@ -2660,6 +4236,13 @@
         if (definition) {
           buyAction(definition);
         }
+      });
+      elements.eventChoices.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-choice]");
+        if (!button || button.disabled) {
+          return;
+        }
+        resolveEvent(Number(button.dataset.choice));
       });
 
       elements.offlineClose.addEventListener("click", closeOfflineReport);
